@@ -1,3 +1,0 @@
-/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles/ext2fs.dir
-/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles/edit_cache.dir
-/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles/rebuild_cache.dir

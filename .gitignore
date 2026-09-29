@@ -22,8 +22,8 @@ frontend/dist/
 frontend/.vite/
 frontend/*.log
 frontend/*.lock
-frontend/package-lock.json
-frontend/yarn.lock
+# NOTA: Se eliminaron package-lock.json y yarn.lock. 
+# Estos archivos SÍ deben subirse a Git para asegurar las versiones.
 
 # ============================================================
 # ARCHIVOS DE DISCO Y DATOS
@@ -37,16 +37,16 @@ disks/
 
 # Archivos de prueba
 archivos/
-*.txt
 *.tmp
 *.temp
+# NOTA: Se eliminó "*.txt" para no ignorar READMEs o configuraciones.
 
 # Reportes generados
-*.png
-*.jpg
-*.jpeg
+# NOTA: Se eliminaron "*.png", "*.jpg", "*.svg" para no ignorar 
+# logos o íconos del frontend. Se asume que los reportes se 
+# generan en una carpeta específica.
+reports/
 *.pdf
-*.svg
 *.dot
 
 # ============================================================
@@ -84,9 +84,12 @@ users.txt
 users_test.txt
 
 # Scripts de prueba
-*.sh
-*.bat
-*.ps1
+# NOTA: Se eliminaron "*.sh", "*.bat" y "*.ps1" para no ignorar 
+# scripts útiles de compilación o despliegue. 
+# Solo se ignoran scripts de prueba específicos.
+test_*.sh
+test_*.bat
+test_*.ps1
 test_*.txt
 
 # Backups
