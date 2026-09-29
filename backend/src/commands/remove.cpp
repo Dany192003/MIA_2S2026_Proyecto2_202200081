@@ -231,7 +231,7 @@ CommandResult CommandHandler::processRemove(const json& params) {
             return result;
         }
         
-                // ✅ FIX CRÍTICO: users.txt solo lo puede borrar root
+                // FIX CRÍTICO: users.txt solo lo puede borrar root
         if (path == "/users.txt" && !isRoot()) {
             result.message = "Error: Solo el usuario root puede eliminar /users.txt";
             return result;
