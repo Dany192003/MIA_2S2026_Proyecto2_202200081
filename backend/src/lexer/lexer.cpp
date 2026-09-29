@@ -150,12 +150,17 @@ void Lexer::identifyCommand() {
     std::string lowerCommand = command;
     std::transform(lowerCommand.begin(), lowerCommand.end(), lowerCommand.begin(), ::tolower);
     
+    // ===== COMANDOS VÁLIDOS (Proyecto 1 + Proyecto 2) =====
     std::vector<std::string> validCommands = {
+        // Proyecto 1
         "mkdisk", "rmdisk", "fdisk", "mount", "mounted",
         "mkfs", "login", "logout",
         "mkgrp", "rmgrp", "mkusr", "rmusr", "chgrp",
         "mkfile", "mkdir", "cat",
-        "rep", "lsdisk", "lsjson", "lsreports"
+        "rep", "lsdisk", "lsjson", "lsreports",
+        // Proyecto 2 (NUEVOS)
+        "unmount", "remove", "rename", "copy",
+        "move", "find", "chown", "loss", "journaling"
     };
     
     if (std::find(validCommands.begin(), validCommands.end(), lowerCommand) != validCommands.end()) {

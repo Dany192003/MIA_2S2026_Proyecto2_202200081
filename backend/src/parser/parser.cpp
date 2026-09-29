@@ -10,11 +10,9 @@ CommandResult Parser::parse(const std::string& input) {
     result.success = false;
     errors.clear();
     
-    // Tokenizar primero
     Lexer lexer;
     tokens = lexer.tokenize(input);
     
-    // Verificar errores léxicos
     if (lexer.hasErrors()) {
         result.errors = lexer.getErrors();
         result.message = "Errores léxicos encontrados";
@@ -24,7 +22,6 @@ CommandResult Parser::parse(const std::string& input) {
     currentToken = 0;
     
     try {
-        // Verificar que hay tokens
         if (tokens.empty()) {
             addError("Comando vacío");
             result.errors = errors;
@@ -32,10 +29,8 @@ CommandResult Parser::parse(const std::string& input) {
             return result;
         }
         
-        // Parsear el comando
         parseCommand(result);
         
-        // Verificar que no haya tokens sobrantes
         if (!isAtEnd()) {
             addError("Tokens no esperados al final del comando");
         }
@@ -103,7 +98,6 @@ void Parser::synchronize() {
 }
 
 void Parser::parseCommand(CommandResult& result) {
-    // Verificar que el primer token sea un comando
     if (!check("COMMAND")) {
         addError("Se esperaba un comando");
         return;
@@ -112,16 +106,12 @@ void Parser::parseCommand(CommandResult& result) {
     Token commandToken = advance();
     std::string command = commandToken.value;
     
-    // Verificar que el comando sea válido
     if (std::find(validCommands.begin(), validCommands.end(), command) == validCommands.end()) {
         addError("Comando no reconocido: '" + command + "'");
         return;
     }
     
-    // Guardar el comando en el resultado
     result.data["command"] = command;
-    
-    // Parsear parámetros
     parseParameters(result, command);
 }
 
@@ -129,7 +119,6 @@ void Parser::parseParameters(CommandResult& result, const std::string& command) 
     std::map<std::string, std::string> params;
     std::vector<std::string> foundParams;
     
-    // Obtener parámetros esperados
     auto it = commandParams.find(command);
     if (it == commandParams.end()) {
         addError("No hay definición de parámetros para el comando: " + command);
@@ -138,12 +127,10 @@ void Parser::parseParameters(CommandResult& result, const std::string& command) 
     
     std::vector<std::string> expectedParams = it->second;
     
-    // Parsear todos los parámetros
     while (!isAtEnd() && (check("PARAMETER") || check("FLAG"))) {
         Token token = peekToken();
         
         if (token.type == "FLAG") {
-            // Parámetro sin valor (como -r, -p)
             advance();
             std::string paramName = token.value;
             params[paramName] = "true";
@@ -152,10 +139,9 @@ void Parser::parseParameters(CommandResult& result, const std::string& command) 
         }
         
         if (token.type == "PARAMETER") {
-            advance(); // Consumir PARAMETER
+            advance();
             std::string paramName = token.value;
             
-            // Permitir file1, file2, ... para cat
             bool isValidParam = false;
             
             if (command == "cat" && paramName.find("file") == 0) {
@@ -170,19 +156,16 @@ void Parser::parseParameters(CommandResult& result, const std::string& command) 
                 continue;
             }
             
-            // Esperar '='
             if (!check("EQUALS")) {
                 addError("Se esperaba '=' después del parámetro: " + paramName);
                 continue;
             }
-            advance(); // Consumir EQUALS
+            advance();
             
-            // Obtener valor
             if (check("VALUE") || check("NUMBER") || check("STRING")) {
                 Token valueToken = advance();
                 std::string value = valueToken.value;
                 
-                // Validar valor según el parámetro
                 if (!validateParameterValue(paramName, value, command)) {
                     addError("Valor inválido para el parámetro '" + paramName + "': " + value);
                 }
@@ -195,7 +178,6 @@ void Parser::parseParameters(CommandResult& result, const std::string& command) 
         }
     }
     
-    // Verificar parámetros obligatorios
     auto reqIt = requiredParams.find(command);
     if (reqIt != requiredParams.end()) {
         std::vector<std::string> required = reqIt->second;
@@ -206,7 +188,6 @@ void Parser::parseParameters(CommandResult& result, const std::string& command) 
         }
     }
     
-    // Guardar parámetros en el resultado
     result.data["parameters"] = json(params);
 }
 
@@ -216,7 +197,6 @@ std::map<std::string, std::string> Parser::parseParameterList() {
 }
 
 bool Parser::validateParameterValue(const std::string& param, const std::string& value, const std::string& command) {
-    // Para cat, no validamos los valores de file1, file2, ...
     if (command == "cat" && param.find("file") == 0) {
         return true;
     }
@@ -231,7 +211,6 @@ bool Parser::validateParameterValue(const std::string& param, const std::string&
         return validateFit(value);
     }
     else if (param == "type") {
-       
         return validateType(value, command);
     }
     else if (param == "name") {
@@ -254,6 +233,32 @@ bool Parser::validateParameterValue(const std::string& param, const std::string&
     }
     else if (param == "cont") {
         return validatePath(value);
+    }
+    // ===== NUEVOS PARÁMETROS PROYECTO 2 =====
+    else if (param == "destino") {
+        return validatePath(value);
+    }
+    else if (param == "usuario") {
+        return value.length() <= 10;
+    }
+    else if (param == "fs") {
+        std::string fs = normalizeValue(value);
+        return fs == "2fs" || fs == "3fs";
+    }
+    else if (param == "add") {
+        // Acepta números positivos y negativos
+        if (value.empty()) return false;
+        try {
+            int n = std::stoi(value);
+            (void)n;
+            return true;
+        } catch (...) {
+            return false;
+        }
+    }
+    else if (param == "delete") {
+        std::string del = normalizeValue(value);
+        return del == "fast" || del == "full";
     }
     return true;
 }
@@ -292,16 +297,13 @@ bool Parser::validateFit(const std::string& value) {
     return fit == "bf" || fit == "ff" || fit == "wf";
 }
 
-// validateType valida según el comando
 bool Parser::validateType(const std::string& value, const std::string& command) {
     std::string type = normalizeValue(value);
     
     if (command == "fdisk") {
-        // Solo P, E, L para fdisk
         return type == "p" || type == "e" || type == "l";
     }
     if (command == "mkfs") {
-        // Solo "full" para mkfs
         return type == "full";
     }
     return false;
@@ -322,8 +324,6 @@ bool Parser::validateName(const std::string& value) {
 bool Parser::validatePath(const std::string& value) {
     if (value.empty()) return false;
     
-    // Aceptar rutas relativas y absolutas
-    // No permitir caracteres peligrosos
     for (char c : value) {
         if (c == '<' || c == '>' || c == '|' || c == '&' || c == ';' || c == '`') {
             return false;

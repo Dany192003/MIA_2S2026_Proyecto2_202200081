@@ -14,7 +14,7 @@ static std::string getDiskDir() {
         return std::string(env);
     }
     
-    return "/home/Edwin/Desktop/MIA_2S2026_Proyecto1_202200081/discos/";
+    return "/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/discos/";
 }
 
 static void readLogicalPartitions(std::ifstream& diskFile, int64_t extendedStart, json& partitions, int& partCount) {
