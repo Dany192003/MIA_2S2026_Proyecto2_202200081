@@ -14,14 +14,20 @@
 #include "../structures/superblock.h"
 #include "../structures/inode.h"
 #include "../structures/block.h"
+#include "../structures/journal.h"   // ✅ NUEVO
 
 class CommandHandler {
 public:
     CommandHandler();
     CommandResult processCommand(const std::string& command);
     
-    //Endpoint para consultar sesión activa
+    // Endpoint para consultar sesión activa
     json getSessionStatus();
+    
+    // ✅ NUEVO: Endpoint para login por GUI
+    CommandResult loginFromGUI(const std::string& id, const std::string& user, const std::string& pass);
+    // ✅ NUEVO: Endpoint para logout por GUI
+    CommandResult logoutFromGUI();
     
 private:
     Lexer lexer;
@@ -44,7 +50,7 @@ private:
     };
     Session currentSession;
     
-    //UN SOLO MUTEX PARA TODO EL ESTADO
+    // UN SOLO MUTEX PARA TODO EL ESTADO
     std::mutex stateMutex;
     
     // ===== MÉTODOS DE VALIDACIÓN =====
@@ -55,7 +61,7 @@ private:
     bool isLoggedIn();
     bool isRoot();
     
-    // ===== COMANDOS =====
+    // ===== COMANDOS DEL PROYECTO 1 =====
     CommandResult processMkdisk(const json& params);
     CommandResult processRmdisk(const json& params);
     CommandResult processFdisk(const json& params);
@@ -76,6 +82,23 @@ private:
     CommandResult processLsdisk(const json& params);
     CommandResult processLsjson(const json& params);
     CommandResult processLsreports(const json& params);
+    
+    // ===== COMANDOS NUEVOS DEL PROYECTO 2 =====
+    CommandResult processUnmount(const json& params);
+    CommandResult processRemove(const json& params);
+    CommandResult processRename(const json& params);
+    CommandResult processCopy(const json& params);
+    CommandResult processMove(const json& params);
+    CommandResult processFind(const json& params);
+    CommandResult processChown(const json& params);
+    CommandResult processLoss(const json& params);
+    CommandResult processJournaling(const json& params);
+    
+    // ===== HELPERS DEL PROYECTO 2 =====
+    // ✅ NUEVO: Registrar operación en el journal
+    void writeJournal(const Superblock& sb, int partitionIndex, 
+                      const std::string& operation, const std::string& path,
+                      const std::string& content);
 };
 
 #endif

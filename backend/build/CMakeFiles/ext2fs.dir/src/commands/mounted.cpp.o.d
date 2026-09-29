@@ -296,4 +296,5 @@ CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.o: \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/ebr.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/superblock.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/inode.h \
- /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/block.h
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/block.h \
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/journal.h

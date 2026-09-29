@@ -177,6 +177,30 @@ src/commands/chgrp.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.s
 .PHONY : src/commands/chgrp.cpp.s
 
+src/commands/chown.o: src/commands/chown.cpp.o
+.PHONY : src/commands/chown.o
+
+# target to build an object file
+src/commands/chown.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o
+.PHONY : src/commands/chown.cpp.o
+
+src/commands/chown.i: src/commands/chown.cpp.i
+.PHONY : src/commands/chown.i
+
+# target to preprocess a source file
+src/commands/chown.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/chown.cpp.i
+.PHONY : src/commands/chown.cpp.i
+
+src/commands/chown.s: src/commands/chown.cpp.s
+.PHONY : src/commands/chown.s
+
+# target to generate assembly for a file
+src/commands/chown.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/chown.cpp.s
+.PHONY : src/commands/chown.cpp.s
+
 src/commands/command_handler.o: src/commands/command_handler.cpp.o
 .PHONY : src/commands/command_handler.o
 
@@ -201,6 +225,30 @@ src/commands/command_handler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/command_handler.cpp.s
 .PHONY : src/commands/command_handler.cpp.s
 
+src/commands/copy.o: src/commands/copy.cpp.o
+.PHONY : src/commands/copy.o
+
+# target to build an object file
+src/commands/copy.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o
+.PHONY : src/commands/copy.cpp.o
+
+src/commands/copy.i: src/commands/copy.cpp.i
+.PHONY : src/commands/copy.i
+
+# target to preprocess a source file
+src/commands/copy.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/copy.cpp.i
+.PHONY : src/commands/copy.cpp.i
+
+src/commands/copy.s: src/commands/copy.cpp.s
+.PHONY : src/commands/copy.s
+
+# target to generate assembly for a file
+src/commands/copy.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/copy.cpp.s
+.PHONY : src/commands/copy.cpp.s
+
 src/commands/fdisk.o: src/commands/fdisk.cpp.o
 .PHONY : src/commands/fdisk.o
 
@@ -224,6 +272,54 @@ src/commands/fdisk.s: src/commands/fdisk.cpp.s
 src/commands/fdisk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/fdisk.cpp.s
 .PHONY : src/commands/fdisk.cpp.s
+
+src/commands/find.o: src/commands/find.cpp.o
+.PHONY : src/commands/find.o
+
+# target to build an object file
+src/commands/find.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/find.cpp.o
+.PHONY : src/commands/find.cpp.o
+
+src/commands/find.i: src/commands/find.cpp.i
+.PHONY : src/commands/find.i
+
+# target to preprocess a source file
+src/commands/find.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/find.cpp.i
+.PHONY : src/commands/find.cpp.i
+
+src/commands/find.s: src/commands/find.cpp.s
+.PHONY : src/commands/find.s
+
+# target to generate assembly for a file
+src/commands/find.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/find.cpp.s
+.PHONY : src/commands/find.cpp.s
+
+src/commands/journaling.o: src/commands/journaling.cpp.o
+.PHONY : src/commands/journaling.o
+
+# target to build an object file
+src/commands/journaling.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o
+.PHONY : src/commands/journaling.cpp.o
+
+src/commands/journaling.i: src/commands/journaling.cpp.i
+.PHONY : src/commands/journaling.i
+
+# target to preprocess a source file
+src/commands/journaling.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.i
+.PHONY : src/commands/journaling.cpp.i
+
+src/commands/journaling.s: src/commands/journaling.cpp.s
+.PHONY : src/commands/journaling.s
+
+# target to generate assembly for a file
+src/commands/journaling.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.s
+.PHONY : src/commands/journaling.cpp.s
 
 src/commands/login.o: src/commands/login.cpp.o
 .PHONY : src/commands/login.o
@@ -272,6 +368,30 @@ src/commands/logout.s: src/commands/logout.cpp.s
 src/commands/logout.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/logout.cpp.s
 .PHONY : src/commands/logout.cpp.s
+
+src/commands/loss.o: src/commands/loss.cpp.o
+.PHONY : src/commands/loss.o
+
+# target to build an object file
+src/commands/loss.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o
+.PHONY : src/commands/loss.cpp.o
+
+src/commands/loss.i: src/commands/loss.cpp.i
+.PHONY : src/commands/loss.i
+
+# target to preprocess a source file
+src/commands/loss.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/loss.cpp.i
+.PHONY : src/commands/loss.cpp.i
+
+src/commands/loss.s: src/commands/loss.cpp.s
+.PHONY : src/commands/loss.s
+
+# target to generate assembly for a file
+src/commands/loss.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/loss.cpp.s
+.PHONY : src/commands/loss.cpp.s
 
 src/commands/lsdisk.o: src/commands/lsdisk.cpp.o
 .PHONY : src/commands/lsdisk.o
@@ -537,6 +657,78 @@ src/commands/mounted.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.s
 .PHONY : src/commands/mounted.cpp.s
 
+src/commands/move.o: src/commands/move.cpp.o
+.PHONY : src/commands/move.o
+
+# target to build an object file
+src/commands/move.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/move.cpp.o
+.PHONY : src/commands/move.cpp.o
+
+src/commands/move.i: src/commands/move.cpp.i
+.PHONY : src/commands/move.i
+
+# target to preprocess a source file
+src/commands/move.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/move.cpp.i
+.PHONY : src/commands/move.cpp.i
+
+src/commands/move.s: src/commands/move.cpp.s
+.PHONY : src/commands/move.s
+
+# target to generate assembly for a file
+src/commands/move.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/move.cpp.s
+.PHONY : src/commands/move.cpp.s
+
+src/commands/remove.o: src/commands/remove.cpp.o
+.PHONY : src/commands/remove.o
+
+# target to build an object file
+src/commands/remove.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o
+.PHONY : src/commands/remove.cpp.o
+
+src/commands/remove.i: src/commands/remove.cpp.i
+.PHONY : src/commands/remove.i
+
+# target to preprocess a source file
+src/commands/remove.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/remove.cpp.i
+.PHONY : src/commands/remove.cpp.i
+
+src/commands/remove.s: src/commands/remove.cpp.s
+.PHONY : src/commands/remove.s
+
+# target to generate assembly for a file
+src/commands/remove.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/remove.cpp.s
+.PHONY : src/commands/remove.cpp.s
+
+src/commands/rename.o: src/commands/rename.cpp.o
+.PHONY : src/commands/rename.o
+
+# target to build an object file
+src/commands/rename.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o
+.PHONY : src/commands/rename.cpp.o
+
+src/commands/rename.i: src/commands/rename.cpp.i
+.PHONY : src/commands/rename.i
+
+# target to preprocess a source file
+src/commands/rename.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/rename.cpp.i
+.PHONY : src/commands/rename.cpp.i
+
+src/commands/rename.s: src/commands/rename.cpp.s
+.PHONY : src/commands/rename.s
+
+# target to generate assembly for a file
+src/commands/rename.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/rename.cpp.s
+.PHONY : src/commands/rename.cpp.s
+
 src/commands/rep.o: src/commands/rep.cpp.o
 .PHONY : src/commands/rep.o
 
@@ -705,6 +897,30 @@ src/commands/rmusr.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.s
 .PHONY : src/commands/rmusr.cpp.s
 
+src/commands/unmount.o: src/commands/unmount.cpp.o
+.PHONY : src/commands/unmount.o
+
+# target to build an object file
+src/commands/unmount.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o
+.PHONY : src/commands/unmount.cpp.o
+
+src/commands/unmount.i: src/commands/unmount.cpp.i
+.PHONY : src/commands/unmount.i
+
+# target to preprocess a source file
+src/commands/unmount.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.i
+.PHONY : src/commands/unmount.cpp.i
+
+src/commands/unmount.s: src/commands/unmount.cpp.s
+.PHONY : src/commands/unmount.s
+
+# target to generate assembly for a file
+src/commands/unmount.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ext2fs.dir/build.make CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.s
+.PHONY : src/commands/unmount.cpp.s
+
 src/lexer/lexer.o: src/lexer/lexer.cpp.o
 .PHONY : src/lexer/lexer.o
 
@@ -864,18 +1080,33 @@ help:
 	@echo "... src/commands/chgrp.o"
 	@echo "... src/commands/chgrp.i"
 	@echo "... src/commands/chgrp.s"
+	@echo "... src/commands/chown.o"
+	@echo "... src/commands/chown.i"
+	@echo "... src/commands/chown.s"
 	@echo "... src/commands/command_handler.o"
 	@echo "... src/commands/command_handler.i"
 	@echo "... src/commands/command_handler.s"
+	@echo "... src/commands/copy.o"
+	@echo "... src/commands/copy.i"
+	@echo "... src/commands/copy.s"
 	@echo "... src/commands/fdisk.o"
 	@echo "... src/commands/fdisk.i"
 	@echo "... src/commands/fdisk.s"
+	@echo "... src/commands/find.o"
+	@echo "... src/commands/find.i"
+	@echo "... src/commands/find.s"
+	@echo "... src/commands/journaling.o"
+	@echo "... src/commands/journaling.i"
+	@echo "... src/commands/journaling.s"
 	@echo "... src/commands/login.o"
 	@echo "... src/commands/login.i"
 	@echo "... src/commands/login.s"
 	@echo "... src/commands/logout.o"
 	@echo "... src/commands/logout.i"
 	@echo "... src/commands/logout.s"
+	@echo "... src/commands/loss.o"
+	@echo "... src/commands/loss.i"
+	@echo "... src/commands/loss.s"
 	@echo "... src/commands/lsdisk.o"
 	@echo "... src/commands/lsdisk.i"
 	@echo "... src/commands/lsdisk.s"
@@ -909,6 +1140,15 @@ help:
 	@echo "... src/commands/mounted.o"
 	@echo "... src/commands/mounted.i"
 	@echo "... src/commands/mounted.s"
+	@echo "... src/commands/move.o"
+	@echo "... src/commands/move.i"
+	@echo "... src/commands/move.s"
+	@echo "... src/commands/remove.o"
+	@echo "... src/commands/remove.i"
+	@echo "... src/commands/remove.s"
+	@echo "... src/commands/rename.o"
+	@echo "... src/commands/rename.i"
+	@echo "... src/commands/rename.s"
 	@echo "... src/commands/rep.o"
 	@echo "... src/commands/rep.i"
 	@echo "... src/commands/rep.s"
@@ -930,6 +1170,9 @@ help:
 	@echo "... src/commands/rmusr.o"
 	@echo "... src/commands/rmusr.i"
 	@echo "... src/commands/rmusr.s"
+	@echo "... src/commands/unmount.o"
+	@echo "... src/commands/unmount.i"
+	@echo "... src/commands/unmount.s"
 	@echo "... src/lexer/lexer.o"
 	@echo "... src/lexer/lexer.i"
 	@echo "... src/lexer/lexer.s"

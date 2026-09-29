@@ -297,6 +297,7 @@ CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o: \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/superblock.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/inode.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/block.h \
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/journal.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/Report.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/../../structures/mbr.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/../../structures/superblock.h \

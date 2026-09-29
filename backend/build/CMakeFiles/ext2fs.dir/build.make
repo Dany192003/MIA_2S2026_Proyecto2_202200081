@@ -212,10 +212,24 @@ CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mounted.cpp -o CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.s
 
+CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/unmount.cpp
+CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/unmount.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/unmount.cpp > CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/unmount.cpp -o CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.s
+
 CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkfs.cpp
 CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkfs.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.i: cmake_force
@@ -229,7 +243,7 @@ CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/login.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/login.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/login.cpp
 CMakeFiles/ext2fs.dir/src/commands/login.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/login.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/login.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/login.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/login.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/login.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/login.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/login.cpp.i: cmake_force
@@ -243,7 +257,7 @@ CMakeFiles/ext2fs.dir/src/commands/login.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/logout.cpp
 CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/logout.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/logout.cpp.i: cmake_force
@@ -257,7 +271,7 @@ CMakeFiles/ext2fs.dir/src/commands/logout.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkgrp.cpp
 CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkgrp.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.i: cmake_force
@@ -271,7 +285,7 @@ CMakeFiles/ext2fs.dir/src/commands/mkgrp.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rmgrp.cpp
 CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rmgrp.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.i: cmake_force
@@ -285,7 +299,7 @@ CMakeFiles/ext2fs.dir/src/commands/rmgrp.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkusr.cpp
 CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkusr.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.i: cmake_force
@@ -299,7 +313,7 @@ CMakeFiles/ext2fs.dir/src/commands/mkusr.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rmusr.cpp
 CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rmusr.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.i: cmake_force
@@ -313,7 +327,7 @@ CMakeFiles/ext2fs.dir/src/commands/rmusr.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/chgrp.cpp
 CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/chgrp.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.i: cmake_force
@@ -327,7 +341,7 @@ CMakeFiles/ext2fs.dir/src/commands/chgrp.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkfile.cpp
 CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkfile.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.i: cmake_force
@@ -341,7 +355,7 @@ CMakeFiles/ext2fs.dir/src/commands/mkfile.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkdir.cpp
 CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/mkdir.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.i: cmake_force
@@ -355,7 +369,7 @@ CMakeFiles/ext2fs.dir/src/commands/mkdir.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/cat.cpp
 CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/cat.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/cat.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/cat.cpp.i: cmake_force
@@ -369,7 +383,7 @@ CMakeFiles/ext2fs.dir/src/commands/cat.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rep.cpp
 CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rep.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/rep.cpp.i: cmake_force
@@ -383,7 +397,7 @@ CMakeFiles/ext2fs.dir/src/commands/rep.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsdisk.cpp
 CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsdisk.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.i: cmake_force
@@ -397,7 +411,7 @@ CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsjson.cpp
 CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsjson.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.i: cmake_force
@@ -411,7 +425,7 @@ CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsreports.cpp
 CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsreports.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.i: cmake_force
@@ -422,10 +436,122 @@ CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/lsreports.cpp -o CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.s
 
+CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/remove.cpp
+CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/remove.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/remove.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/remove.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/remove.cpp > CMakeFiles/ext2fs.dir/src/commands/remove.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/remove.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/remove.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/remove.cpp -o CMakeFiles/ext2fs.dir/src/commands/remove.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rename.cpp
+CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rename.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/rename.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/rename.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rename.cpp > CMakeFiles/ext2fs.dir/src/commands/rename.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/rename.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/rename.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/rename.cpp -o CMakeFiles/ext2fs.dir/src/commands/rename.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/copy.cpp
+CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/copy.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/copy.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/copy.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/copy.cpp > CMakeFiles/ext2fs.dir/src/commands/copy.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/copy.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/copy.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/copy.cpp -o CMakeFiles/ext2fs.dir/src/commands/copy.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/move.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/move.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/move.cpp
+CMakeFiles/ext2fs.dir/src/commands/move.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/move.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/move.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/move.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/move.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/move.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/move.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/move.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/move.cpp > CMakeFiles/ext2fs.dir/src/commands/move.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/move.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/move.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/move.cpp -o CMakeFiles/ext2fs.dir/src/commands/move.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/find.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/find.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/find.cpp
+CMakeFiles/ext2fs.dir/src/commands/find.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/find.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/find.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/find.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/find.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/find.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/find.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/find.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/find.cpp > CMakeFiles/ext2fs.dir/src/commands/find.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/find.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/find.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/find.cpp -o CMakeFiles/ext2fs.dir/src/commands/find.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/chown.cpp
+CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/chown.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/chown.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/chown.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/chown.cpp > CMakeFiles/ext2fs.dir/src/commands/chown.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/chown.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/chown.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/chown.cpp -o CMakeFiles/ext2fs.dir/src/commands/chown.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/loss.cpp
+CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/loss.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/loss.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/loss.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/loss.cpp > CMakeFiles/ext2fs.dir/src/commands/loss.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/loss.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/loss.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/loss.cpp -o CMakeFiles/ext2fs.dir/src/commands/loss.cpp.s
+
+CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o: CMakeFiles/ext2fs.dir/flags.make
+CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/journaling.cpp
+CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/journaling.cpp
+
+CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/journaling.cpp > CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.i
+
+CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/journaling.cpp -o CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.s
+
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/ReportUtils.cpp
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/ReportUtils.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.i: cmake_force
@@ -439,7 +565,7 @@ CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/ReportText.cpp
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/ReportText.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.i: cmake_force
@@ -453,7 +579,7 @@ CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/ReportGraphviz.cpp
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o -MF CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o.d -o CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/reports/ReportGraphviz.cpp
 
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.i: cmake_force
@@ -467,7 +593,7 @@ CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/utils/json_utils.cpp
 CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o -MF CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o.d -o CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/utils/json_utils.cpp
 
 CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.i: cmake_force
@@ -481,7 +607,7 @@ CMakeFiles/ext2fs.dir/src/utils/json_utils.cpp.s: cmake_force
 CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o: CMakeFiles/ext2fs.dir/flags.make
 CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o: /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/utils/ext2_utils.cpp
 CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o: CMakeFiles/ext2fs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o -MF CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o.d -o CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o -c /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/utils/ext2_utils.cpp
 
 CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.i: cmake_force
@@ -504,6 +630,7 @@ ext2fs_OBJECTS = \
 "CMakeFiles/ext2fs.dir/src/commands/fdisk.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/mount.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/login.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o" \
@@ -519,6 +646,14 @@ ext2fs_OBJECTS = \
 "CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/move.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/find.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o" \
+"CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o" \
 "CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o" \
@@ -538,6 +673,7 @@ ext2fs: CMakeFiles/ext2fs.dir/src/commands/rmdisk.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/fdisk.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/mount.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/login.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o
@@ -553,6 +689,14 @@ ext2fs: CMakeFiles/ext2fs.dir/src/commands/rep.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/move.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/find.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o
+ext2fs: CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o
@@ -561,7 +705,7 @@ ext2fs: CMakeFiles/ext2fs.dir/src/utils/ext2_utils.cpp.o
 ext2fs: CMakeFiles/ext2fs.dir/build.make
 ext2fs: CMakeFiles/ext2fs.dir/compiler_depend.ts
 ext2fs: CMakeFiles/ext2fs.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX executable ext2fs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Linking CXX executable ext2fs"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ext2fs.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

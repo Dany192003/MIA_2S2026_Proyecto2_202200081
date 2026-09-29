@@ -15,11 +15,13 @@ set(SOURCES
     src/lexer/lexer.cpp
     src/parser/parser.cpp
     src/commands/command_handler.cpp
+    # Comandos del Proyecto 1
     src/commands/mkdisk.cpp
     src/commands/rmdisk.cpp
     src/commands/fdisk.cpp
     src/commands/mount.cpp
     src/commands/mounted.cpp
+    src/commands/unmount.cpp
     src/commands/mkfs.cpp
     src/commands/login.cpp
     src/commands/logout.cpp
@@ -32,15 +34,27 @@ set(SOURCES
     src/commands/mkdir.cpp
     src/commands/cat.cpp
     src/commands/rep.cpp
-    src/commands/lsdisk.cpp   
+    src/commands/lsdisk.cpp
     src/commands/lsjson.cpp
     src/commands/lsreports.cpp
+    # Comandos nuevos del Proyecto 2
+    src/commands/remove.cpp
+    src/commands/rename.cpp
+    src/commands/copy.cpp
+    src/commands/move.cpp
+    src/commands/find.cpp
+    src/commands/chown.cpp
+    src/commands/loss.cpp
+    src/commands/journaling.cpp
+    # Reportes
     src/commands/reports/ReportUtils.cpp
     src/commands/reports/ReportText.cpp
     src/commands/reports/ReportGraphviz.cpp
+    # Utilidades
     src/utils/json_utils.cpp
     src/utils/ext2_utils.cpp
 )
+
 # Crear ejecutable
 add_executable(ext2fs ${SOURCES})
 

@@ -297,6 +297,7 @@ CMakeFiles/ext2fs.dir/src/commands/rmdisk.cpp.o: \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/superblock.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/inode.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/block.h \
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/journal.h \
  /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \

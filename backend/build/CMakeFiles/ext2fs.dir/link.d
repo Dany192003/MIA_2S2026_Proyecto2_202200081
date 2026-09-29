@@ -12,6 +12,7 @@ ext2fs: \
   CMakeFiles/ext2fs.dir/src/commands/fdisk.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/mount.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/login.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/logout.cpp.o \
@@ -27,6 +28,14 @@ ext2fs: \
   CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/move.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/find.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o \
+  CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/reports/ReportText.cpp.o \
   CMakeFiles/ext2fs.dir/src/commands/reports/ReportGraphviz.cpp.o \
@@ -86,6 +95,8 @@ CMakeFiles/ext2fs.dir/src/commands/mount.cpp.o:
 
 CMakeFiles/ext2fs.dir/src/commands/mounted.cpp.o:
 
+CMakeFiles/ext2fs.dir/src/commands/unmount.cpp.o:
+
 CMakeFiles/ext2fs.dir/src/commands/mkfs.cpp.o:
 
 CMakeFiles/ext2fs.dir/src/commands/login.cpp.o:
@@ -115,6 +126,22 @@ CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o:
 CMakeFiles/ext2fs.dir/src/commands/lsjson.cpp.o:
 
 CMakeFiles/ext2fs.dir/src/commands/lsreports.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/remove.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/rename.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/copy.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/move.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/find.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/chown.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/loss.cpp.o:
+
+CMakeFiles/ext2fs.dir/src/commands/journaling.cpp.o:
 
 CMakeFiles/ext2fs.dir/src/commands/reports/ReportUtils.cpp.o:
 

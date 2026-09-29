@@ -297,6 +297,7 @@ CMakeFiles/ext2fs.dir/src/commands/lsdisk.cpp.o: \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/superblock.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/inode.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/block.h \
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/commands/../structures/journal.h \
  /usr/include/c++/12/fstream \
  /usr/include/x86_64-linux-gnu/c++/12/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/12/bits/c++io.h \

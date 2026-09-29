@@ -49,6 +49,7 @@ CommandResult CommandHandler::processCommand(const std::string& command) {
     
     CommandResult processedResult;
     
+    // ===== COMANDOS DEL PROYECTO 1 =====
     if (cmd == "mkdisk") {
         processedResult = processMkdisk(params);
     } else if (cmd == "rmdisk") {
@@ -89,6 +90,26 @@ CommandResult CommandHandler::processCommand(const std::string& command) {
         processedResult = processLsjson(params);
     } else if (cmd == "lsreports") {
         processedResult = processLsreports(params);
+    }
+    // ===== COMANDOS NUEVOS DEL PROYECTO 2 =====
+    else if (cmd == "unmount") {
+        processedResult = processUnmount(params);
+    } else if (cmd == "remove") {
+        processedResult = processRemove(params);
+    } else if (cmd == "rename") {
+        processedResult = processRename(params);
+    } else if (cmd == "copy") {
+        processedResult = processCopy(params);
+    } else if (cmd == "move") {
+        processedResult = processMove(params);
+    } else if (cmd == "find") {
+        processedResult = processFind(params);
+    } else if (cmd == "chown") {
+        processedResult = processChown(params);
+    } else if (cmd == "loss") {
+        processedResult = processLoss(params);
+    } else if (cmd == "journaling") {
+        processedResult = processJournaling(params);
     } else {
         processedResult.success = false;
         processedResult.message = "Comando no implementado: " + cmd;
@@ -109,7 +130,7 @@ CommandResult CommandHandler::processCommand(const std::string& command) {
 }
 
 // ============================================================
-// Consultar estado de sesión
+// Endpoint para consultar sesión activa
 // ============================================================
 json CommandHandler::getSessionStatus() {
     std::lock_guard<std::mutex> lock(stateMutex);
@@ -123,7 +144,6 @@ json CommandHandler::getSessionStatus() {
     status["gid"] = currentSession.gid;
     status["group"] = currentSession.group;
     
-    // También exponer las particiones montadas
     json mounted = json::array();
     for (const auto& entry : mountedDisks) {
         json item;
@@ -135,6 +155,39 @@ json CommandHandler::getSessionStatus() {
     status["mountedCount"] = mountedDisks.size();
     
     return status;
+}
+
+// ============================================================
+// ✅ NUEVO: Login desde GUI
+// ============================================================
+CommandResult CommandHandler::loginFromGUI(const std::string& id, const std::string& user, const std::string& pass) {
+    json params;
+    params["id"] = id;
+    params["user"] = user;
+    params["pass"] = pass;
+    return processLogin(params);
+}
+
+// ============================================================
+// ✅ NUEVO: Logout desde GUI
+// ============================================================
+CommandResult CommandHandler::logoutFromGUI() {
+    json params;
+    return processLogout(params);
+}
+
+// ============================================================
+// ✅ NUEVO: Escribir en el journal
+// ============================================================
+void CommandHandler::writeJournal(const Superblock& sb, int partitionIndex,
+                                   const std::string& operation, const std::string& path,
+                                   const std::string& content) {
+    // TODO: Implementar en el siguiente paso
+    (void)sb;
+    (void)partitionIndex;
+    (void)operation;
+    (void)path;
+    (void)content;
 }
 
 bool CommandHandler::validateCommandStructure(const CommandResult& result) {
@@ -153,6 +206,8 @@ bool CommandHandler::validateDiskExists(const std::string& path) {
 }
 
 bool CommandHandler::validatePartitionName(const std::string& path, const std::string& name) {
+    (void)path;
+    (void)name;
     return true;
 }
 

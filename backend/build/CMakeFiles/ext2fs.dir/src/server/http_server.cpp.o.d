@@ -879,4 +879,5 @@ CMakeFiles/ext2fs.dir/src/server/http_server.cpp.o: \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/server/../commands/../structures/ebr.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/server/../commands/../structures/superblock.h \
  /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/server/../commands/../structures/inode.h \
- /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/server/../commands/../structures/block.h
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/server/../commands/../structures/block.h \
+ /home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/backend/src/server/../commands/../structures/journal.h
