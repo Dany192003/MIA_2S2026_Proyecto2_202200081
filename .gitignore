@@ -1,0 +1,97 @@
+# ============================================================
+# COMPILACIÓN Y DEPENDENCIAS
+# ============================================================
+
+# Backend - CMake
+backend/build/
+backend/cmake-build-*/
+backend/CMakeCache.txt
+backend/CMakeFiles/
+backend/cmake_install.cmake
+backend/Makefile
+backend/ext2fs
+backend/*.o
+backend/*.a
+backend/*.so
+backend/*.exe
+backend/*.out
+
+# Frontend - Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.log
+frontend/*.lock
+frontend/package-lock.json
+frontend/yarn.lock
+
+# ============================================================
+# ARCHIVOS DE DISCO Y DATOS
+# ============================================================
+
+# Discos virtuales .mia
+disks/
+*.mia
+*.dsk
+*.img
+
+# Archivos de prueba
+archivos/
+*.txt
+*.tmp
+*.temp
+
+# Reportes generados
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.svg
+*.dot
+
+# ============================================================
+# EDITORES Y SISTEMAS OPERATIVOS
+# ============================================================
+
+# VSCode
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# LOGS Y TEMPORALES
+# ============================================================
+
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+*.patch
+
+# ============================================================
+# OTROS
+# ============================================================
+
+# Archivos de usuario
+users.txt
+users_test.txt
+
+# Scripts de prueba
+*.sh
+*.bat
+*.ps1
+test_*.txt
+
+# Backups
+*.tar
+*.gz
+*.zip
+*.rar
+*.7z
