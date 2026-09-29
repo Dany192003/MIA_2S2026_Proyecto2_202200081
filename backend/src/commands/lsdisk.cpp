@@ -6,9 +6,8 @@
 
 namespace fs = std::filesystem;
 
-//Ruta configurable con fallback absoluto
+// Ruta configurable con fallback absoluto
 static std::string getDiskDir() {
-    // 1. Variable de entorno
     const char* env = std::getenv("EXT2_DISK_DIR");
     if (env && strlen(env) > 0) {
         return std::string(env);
@@ -17,27 +16,54 @@ static std::string getDiskDir() {
     return "/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/discos/";
 }
 
-static void readLogicalPartitions(std::ifstream& diskFile, int64_t extendedStart, json& partitions, int& partCount) {
+// ✅ CORREGIDO: Recibe el nombre de la extendida para saltar su EBR
+static void readLogicalPartitions(std::ifstream& diskFile, 
+                                   int64_t extendedStart, 
+                                   const std::string& extendedName,
+                                   json& partitions, 
+                                   int& partCount) {
     std::streampos currentPos = diskFile.tellg();
     
     EBR ebr;
     int64_t ebrPos = extendedStart;
     
+    // Leer el primer EBR
     diskFile.seekg(ebrPos, std::ios::beg);
     diskFile.read(reinterpret_cast<char*>(&ebr), sizeof(EBR));
     
-    if (ebr.part_s == 0 && ebr.part_next != -1) {
-        ebrPos = ebr.part_next;
+    // ✅ CORREGIDO: Saltar el EBR "de la extendida" si tiene el mismo nombre
+    // Esto pasa cuando la extendida se creó pero aún no había lógicas
+    std::string firstName(ebr.part_name, 16);
+    size_t nul = firstName.find('\0');
+    if (nul != std::string::npos) firstName = firstName.substr(0, nul);
+    
+    if (firstName == extendedName) {
+        // Es el EBR de la extendida, saltarlo
+        if (ebr.part_next != -1) {
+            ebrPos = ebr.part_next;
+        } else {
+            // No hay siguiente, la extendida está vacía
+            diskFile.seekg(currentPos, std::ios::beg);
+            return;
+        }
     }
     
+    // Recorrer la cadena de EBRs reales (lógicas)
     while (true) {
         diskFile.seekg(ebrPos, std::ios::beg);
         diskFile.read(reinterpret_cast<char*>(&ebr), sizeof(EBR));
         if (!diskFile || ebr.part_s == 0) break;
         
         std::string partName(ebr.part_name, 16);
-        size_t nul = partName.find('\0');
+        nul = partName.find('\0');
         if (nul != std::string::npos) partName = partName.substr(0, nul);
+        
+        // ✅ CORREGIDO: Saltar si aún tiene el nombre de la extendida
+        if (partName == extendedName) {
+            if (ebr.part_next == -1) break;
+            ebrPos = ebr.part_next;
+            continue;
+        }
         
         json part;
         part["name"] = partName;
@@ -57,6 +83,7 @@ static void readLogicalPartitions(std::ifstream& diskFile, int64_t extendedStart
 }
 
 CommandResult CommandHandler::processLsdisk(const json& params) {
+    (void)params;
     CommandResult result;
     result.success = false;
     
@@ -108,8 +135,13 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                             partitions.push_back(part);
                             partCount++;
                             
+                            // ✅ CORREGIDO: Pasar el nombre de la extendida
                             if (mbr.mbr_partitions[i].part_type == 'E') {
-                                readLogicalPartitions(diskFile, mbr.mbr_partitions[i].part_start, partitions, partCount);
+                                readLogicalPartitions(diskFile, 
+                                                     mbr.mbr_partitions[i].part_start,
+                                                     partName,   // ← nombre de la extendida
+                                                     partitions, 
+                                                     partCount);
                             }
                         }
                     }

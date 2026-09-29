@@ -3,16 +3,55 @@
 #include <fstream>
 #include <cstring>
 #include <cmath>
-
+#include <ctime>
 
 #define EXT2_MAGIC 0xEF53
 
-static void calculateStructures(int64_t partitionSize, int& numInodes, int& numBlocks) {
+// ============================================================
+// Constante del Journaling según PDF (página 12)
+// El PDF dice: "El valor del Journaling se va a manejar con una constante de 50"
+// ============================================================
+#define JOURNALING_CONSTANT 50
+
+// ============================================================
+// Calcular estructuras para EXT2
+// ============================================================
+static void calculateStructuresEXT2(int64_t partitionSize, int& numInodes, int& numBlocks) {
     const int64_t SUPERBLOCK_SIZE = (int64_t)sizeof(Superblock);  // 84
     const int64_t INODE_REAL_SIZE = (int64_t)sizeof(Inode);        // 104
     const int64_t BLOCK_REAL_SIZE = (int64_t)sizeof(BlockFile);    // 64
     
     int64_t denominator = 4 + INODE_REAL_SIZE + 3 * BLOCK_REAL_SIZE;
+    int64_t numerator = partitionSize - SUPERBLOCK_SIZE;
+    
+    if (numerator <= 0) {
+        numInodes = 1;
+        numBlocks = 3;
+        return;
+    }
+    
+    numInodes = (int)floor((double)numerator / denominator);
+    numBlocks = numInodes * 3;
+    
+    if (numInodes < 1) numInodes = 1;
+    if (numBlocks < 3) numBlocks = 3;
+}
+
+// ============================================================
+// Calcular estructuras para EXT3
+// Fórmula PDF:
+// tamaño = sizeof(superblock) + n*sizeof(Journaling) + n + 3n + n*sizeof(inodos) + 3n*sizeof(block)
+// Con sizeof(Journaling) = 50 (constante)
+// ============================================================
+static void calculateStructuresEXT3(int64_t partitionSize, int& numInodes, int& numBlocks) {
+    const int64_t SUPERBLOCK_SIZE = (int64_t)sizeof(Superblock);   // 84
+    const int64_t JOURNALING_SIZE = JOURNALING_CONSTANT;            // 50
+    const int64_t INODE_REAL_SIZE = (int64_t)sizeof(Inode);         // 104
+    const int64_t BLOCK_REAL_SIZE = (int64_t)sizeof(BlockFile);     // 64
+    
+    // denominador = sizeof(Journaling) + 1 + 3 + sizeof(inodo) + 3*sizeof(block)
+    //             = 50 + 4 + 104 + 192 = 350
+    int64_t denominator = JOURNALING_SIZE + 4 + INODE_REAL_SIZE + 3 * BLOCK_REAL_SIZE;
     int64_t numerator = partitionSize - SUPERBLOCK_SIZE;
     
     if (numerator <= 0) {
@@ -36,11 +75,22 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         // 1. Obtener parámetros
         std::string id = params["id"];
         std::string type = params.contains("type") ? std::string(params["type"]) : "full";
+        std::string fs = params.contains("fs") ? std::string(params["fs"]) : "2fs";
         
         std::transform(type.begin(), type.end(), type.begin(), ::tolower);
+        std::transform(fs.begin(), fs.end(), fs.begin(), ::tolower);
         
         if (type != "full") {
             result.message = "Error: Tipo de formateo inválido. Solo se permite 'full'";
+            return result;
+        }
+        
+        // Validar fs
+        int fsNumber = 2;
+        if (fs == "2fs") fsNumber = 2;
+        else if (fs == "3fs") fsNumber = 3;
+        else {
+            result.message = "Error: Sistema de archivos inválido. Use '2fs' o '3fs'";
             return result;
         }
         
@@ -81,12 +131,14 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         }
         
         if (partitionIndex == -1) {
+            disk.close();
             result.message = "Error: No se encontró la partición para el ID: " + id;
             return result;
         }
         
         // 7. Verificar que la partición esté montada
         if (mbr.mbr_partitions[partitionIndex].part_status != '1') {
+            disk.close();
             result.message = "Error: La partición no está montada";
             return result;
         }
@@ -96,15 +148,19 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         int64_t partitionStart = partition.part_start;
         int64_t partitionSize = partition.part_s;
         
-        // 9. Calcular estructuras EXT2
+        // 9. Calcular estructuras según el tipo
         int numInodes, numBlocks;
-        calculateStructures(partitionSize, numInodes, numBlocks);
+        if (fsNumber == 3) {
+            calculateStructuresEXT3(partitionSize, numInodes, numBlocks);
+        } else {
+            calculateStructuresEXT2(partitionSize, numInodes, numBlocks);
+        }
         
         // 10. Crear Superbloque
         Superblock sb;
         memset(&sb, 0, sizeof(Superblock));
         
-        sb.s_filesystem_type = 2;
+        sb.s_filesystem_type = fsNumber;   // 2 o 3
         sb.s_inodes_count = numInodes;
         sb.s_blocks_count = numBlocks;
         sb.s_free_blocks_count = numBlocks;
@@ -113,34 +169,93 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         sb.s_umtime = time(nullptr);
         sb.s_mnt_count = 1;
         sb.s_magic = EXT2_MAGIC;
-        sb.s_inode_s = (int)sizeof(Inode);       
-        sb.s_block_s = (int)sizeof(BlockFile);   
+        sb.s_inode_s = (int)sizeof(Inode);
+        sb.s_block_s = (int)sizeof(BlockFile);
         sb.s_first_ino = 0;
         sb.s_first_blo = 0;
         
-        // Calcular offsets
-        int64_t currentOffset = partitionStart + sizeof(Superblock);
-        sb.s_bm_inode_start = currentOffset;
-        int bmInodeSize = (numInodes + 7) / 8;
-        currentOffset += bmInodeSize;
+        // ============================================================
+        // Calcular offsets según EXT2 o EXT3
+        // ============================================================
         
-        sb.s_bm_block_start = currentOffset;
-        int bmBlockSize = (numBlocks + 7) / 8;
-        currentOffset += bmBlockSize;
-        
-        sb.s_inode_start = currentOffset;
-        int inodeTableSize = numInodes * sizeof(Inode);   
-        currentOffset += inodeTableSize;
-        
-        sb.s_block_start = currentOffset;
-        int blockTableSize = numBlocks * sizeof(BlockFile);  
-        currentOffset += blockTableSize;
+        if (fsNumber == 3) {
+            // EXT3: [Superbloque][Journaling][Bitmap Inodos][Bitmap Bloques][Inodos][Bloques]
+            int64_t currentOffset = partitionStart + sizeof(Superblock);
+            
+            // ✅ NOTA: El Superbloque actual no tiene campos para Journaling
+            // Los offsets se calculan pero el Journaling se maneja "virtualmente"
+            // Para simplificar, se reserva el espacio del Journaling sin un campo en el superbloque
+            
+            int journalingSize = JOURNALING_CONSTANT * numInodes;  // n * 50 bytes
+            currentOffset += journalingSize;
+            
+            sb.s_bm_inode_start = currentOffset;
+            int bmInodeSize = (numInodes + 7) / 8;
+            currentOffset += bmInodeSize;
+            
+            sb.s_bm_block_start = currentOffset;
+            int bmBlockSize = (numBlocks + 7) / 8;
+            currentOffset += bmBlockSize;
+            
+            sb.s_inode_start = currentOffset;
+            int inodeTableSize = numInodes * sizeof(Inode);
+            currentOffset += inodeTableSize;
+            
+            sb.s_block_start = currentOffset;
+            int blockTableSize = numBlocks * sizeof(BlockFile);
+            currentOffset += blockTableSize;
+            
+        } else {
+            // EXT2: [Superbloque][Bitmap Inodos][Bitmap Bloques][Inodos][Bloques]
+            int64_t currentOffset = partitionStart + sizeof(Superblock);
+            
+            sb.s_bm_inode_start = currentOffset;
+            int bmInodeSize = (numInodes + 7) / 8;
+            currentOffset += bmInodeSize;
+            
+            sb.s_bm_block_start = currentOffset;
+            int bmBlockSize = (numBlocks + 7) / 8;
+            currentOffset += bmBlockSize;
+            
+            sb.s_inode_start = currentOffset;
+            int inodeTableSize = numInodes * sizeof(Inode);
+            currentOffset += inodeTableSize;
+            
+            sb.s_block_start = currentOffset;
+            int blockTableSize = numBlocks * sizeof(BlockFile);
+            currentOffset += blockTableSize;
+        }
         
         // 11. Escribir el Superbloque
         disk.seekp(partitionStart, std::ios::beg);
         disk.write(reinterpret_cast<const char*>(&sb), sizeof(Superblock));
         
-        // 12. Inicializar Bitmaps
+        // 12. Si es EXT3, inicializar el área de Journaling con ceros
+        if (fsNumber == 3) {
+            int64_t journalingStart = partitionStart + sizeof(Superblock);
+            int64_t journalingSize = JOURNALING_CONSTANT * numInodes;
+            
+            char zeroBuf[1024] = {0};
+            disk.seekp(journalingStart, std::ios::beg);
+            int64_t written = 0;
+            while (written < journalingSize) {
+                int64_t chunk = std::min((int64_t)1024, journalingSize - written);
+                disk.write(zeroBuf, chunk);
+                written += chunk;
+            }
+            
+            // Inicializar el primer journal con j_count = 0
+            Journal firstJournal;
+            memset(&firstJournal, 0, sizeof(Journal));
+            firstJournal.j_count = 0;
+            disk.seekp(journalingStart, std::ios::beg);
+            disk.write(reinterpret_cast<const char*>(&firstJournal), sizeof(Journal));
+        }
+        
+        // 13. Inicializar Bitmaps
+        int bmInodeSize = (numInodes + 7) / 8;
+        int bmBlockSize = (numBlocks + 7) / 8;
+        
         char zeroByte = 0;
         disk.seekp(sb.s_bm_inode_start, std::ios::beg);
         for (int i = 0; i < bmInodeSize; i++) disk.write(&zeroByte, 1);
@@ -148,18 +263,18 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         disk.seekp(sb.s_bm_block_start, std::ios::beg);
         for (int i = 0; i < bmBlockSize; i++) disk.write(&zeroByte, 1);
         
-        // 13. Inicializar tabla de inodos
+        // 14. Inicializar tabla de inodos
         disk.seekp(sb.s_inode_start, std::ios::beg);
         char zeroInode[sizeof(Inode)] = {0};
         for (int i = 0; i < numInodes; i++) disk.write(zeroInode, sizeof(Inode));
         
-        // 14. Inicializar tabla de bloques
+        // 15. Inicializar tabla de bloques
         disk.seekp(sb.s_block_start, std::ios::beg);
         char zeroBlock[sizeof(BlockFile)] = {0};
         for (int i = 0; i < numBlocks; i++) disk.write(zeroBlock, sizeof(BlockFile));
         
         // ============================================================
-        // 15. Crear el inodo raíz ("/") con bloque de carpeta
+        // 16. Crear el inodo raíz ("/") con bloque de carpeta
         // ============================================================
         Inode rootInode;
         memset(&rootInode, 0, sizeof(Inode));
@@ -175,7 +290,6 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         rootInode.i_perm[1] = '7';
         rootInode.i_perm[2] = '5';
         
-        // Asignar un bloque para la carpeta raíz
         int rootBlockIndex = Ext2Utils::findFreeBlock(disk, sb);
         if (rootBlockIndex == -1) {
             disk.close();
@@ -186,7 +300,6 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         rootInode.i_block[0] = rootBlockIndex;
         Ext2Utils::markBlockUsed(disk, sb, rootBlockIndex);
         
-        // Inicializar bloque raíz con . y .. apuntando a sí mismo
         BlockFolder rootBlock;
         memset(&rootBlock, 0, sizeof(BlockFolder));
         strcpy(rootBlock.b_content[0].b_name, ".");
@@ -201,17 +314,16 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         Ext2Utils::writeInode(disk, sb, 0, rootInode);
         Ext2Utils::markInodeUsed(disk, sb, 0);
         
-        // Actualizar contadores de libres en el superbloque
         sb.s_free_blocks_count = sb.s_blocks_count - 1;
         sb.s_free_inodes_count = sb.s_inodes_count - 1;
         
         disk.close();
         
-        // 16. Escribir el superbloque actualizado
+        // 17. Escribir el superbloque actualizado
         Ext2Utils::writeSuperblock(diskPath, sb, mbr, partitionIndex);
         
         // ============================================================
-        // 17. Crear users.txt en la raíz
+        // 18. Crear users.txt en la raíz
         // ============================================================
         std::string defaultUsers = "1, G, root\n1, U, root, root, 123\n";
         if (!Ext2Utils::writeFile(diskPath, "/users.txt", defaultUsers, sb, mbr, partitionIndex, 1, 1)) {
@@ -219,15 +331,16 @@ CommandResult CommandHandler::processMkfs(const json& params) {
             return result;
         }
         
-        // Recargar el superbloque actualizado (writeFile lo modificó)
         Superblock sbFinal = Ext2Utils::readSuperblock(diskPath, mbr, partitionIndex);
         
+        std::string fsName = (fsNumber == 3) ? "EXT3" : "EXT2";
         result.success = true;
-        result.message = "Partición formateada exitosamente como EXT2 (Formateo completo)";
+        result.message = "Partición formateada exitosamente como " + fsName + " (Formateo completo)";
         result.data["format"] = {
             {"id", id},
             {"type", type},
-            {"filesystem", "ext2"},
+            {"filesystem", fsName},
+            {"fs_type", fsNumber},
             {"inodes", sbFinal.s_inodes_count},
             {"blocks", sbFinal.s_blocks_count},
             {"free_inodes", sbFinal.s_free_inodes_count},
