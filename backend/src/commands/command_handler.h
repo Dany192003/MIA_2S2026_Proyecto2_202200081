@@ -82,8 +82,6 @@ private:
     CommandResult processLsdisk(const json& params);
     CommandResult processLsjson(const json& params);
     CommandResult processLsreports(const json& params);
-    
-    // ===== COMANDOS NUEVOS DEL PROYECTO 2 =====
     CommandResult processUnmount(const json& params);
     CommandResult processRemove(const json& params);
     CommandResult processRename(const json& params);
