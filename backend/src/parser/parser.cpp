@@ -214,6 +214,10 @@ bool Parser::validateParameterValue(const std::string& param, const std::string&
         return validateType(value, command);
     }
     else if (param == "name") {
+        // ✅ FIX: en rename/copy/move/find, -name puede tener puntos y ser una ruta corta
+        if (command == "rename" || command == "copy" || command == "move" || command == "find") {
+            return validatePath(value);
+        }
         return validateName(value);
     }
     else if (param == "path") {
@@ -313,7 +317,8 @@ bool Parser::validateName(const std::string& value) {
     if (value.empty()) return false;
     
     for (char c : value) {
-        if (!std::isalnum(c) && c != '_' && c != '-' && c != ' ') {
+        // ✅ FIX: permitir punto para nombres con extensión
+        if (!std::isalnum(c) && c != '_' && c != '-' && c != ' ' && c != '.') {
             return false;
         }
     }
