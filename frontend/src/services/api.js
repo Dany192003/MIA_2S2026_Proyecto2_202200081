@@ -33,7 +33,47 @@ export const analyzeCommand = async (command) => {
 }
 
 // ============================================================
-// ✅ NUEVO: GET /session/status
+// ✅ NUEVO: POST /login — Login desde GUI
+// ============================================================
+export const loginUser = async (id, user, pass) => {
+  try {
+    const response = await api.post('/login', { id, user, pass })
+    return {
+      success: response.data.success === true,
+      data: response.data,
+      error: null
+    }
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: error.message || 'Error al iniciar sesión'
+    }
+  }
+}
+
+// ============================================================
+// ✅ NUEVO: POST /logout — Logout desde GUI
+// ============================================================
+export const logoutUser = async () => {
+  try {
+    const response = await api.post('/logout', {})
+    return {
+      success: response.data.success === true,
+      data: response.data,
+      error: null
+    }
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: error.message || 'Error al cerrar sesión'
+    }
+  }
+}
+
+// ============================================================
+// GET /session/status
 // ============================================================
 export const getSessionStatus = async () => {
   try {
@@ -48,6 +88,26 @@ export const getSessionStatus = async () => {
       success: false,
       data: null,
       error: error.message || 'Error consultando sesión'
+    }
+  }
+}
+
+// ============================================================
+// ✅ NUEVO: GET /disks — Listar discos
+// ============================================================
+export const getDisks = async () => {
+  try {
+    const response = await api.get('/disks', { timeout: 5000 })
+    return {
+      success: true,
+      data: response.data,
+      error: null
+    }
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: error.message || 'Error obteniendo discos'
     }
   }
 }

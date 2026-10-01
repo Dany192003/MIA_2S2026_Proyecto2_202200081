@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <cstdlib>
+#include <ctime>
 
 namespace fs = std::filesystem;
 
@@ -14,6 +15,24 @@ static std::string getDiskDir() {
     }
     
     return "/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/discos/";
+}
+
+// ✅ NUEVO: Formatear fecha como string legible
+static std::string formatDate(time_t t) {
+    struct tm* tm_info = localtime(&t);
+    char buffer[32];
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M", tm_info);
+    return std::string(buffer);
+}
+
+// ✅ NUEVO: Convertir char de fit a string legible
+static std::string fitToString(char fit) {
+    switch (fit) {
+        case 'B': return "Best Fit (BF)";
+        case 'F': return "First Fit (FF)";
+        case 'W': return "Worst Fit (WF)";
+        default:  return "Desconocido";
+    }
 }
 
 // ✅ CORREGIDO: Recibe el nombre de la extendida para saltar su EBR
@@ -31,18 +50,15 @@ static void readLogicalPartitions(std::ifstream& diskFile,
     diskFile.seekg(ebrPos, std::ios::beg);
     diskFile.read(reinterpret_cast<char*>(&ebr), sizeof(EBR));
     
-    // ✅ CORREGIDO: Saltar el EBR "de la extendida" si tiene el mismo nombre
-    // Esto pasa cuando la extendida se creó pero aún no había lógicas
+    // Saltar el EBR "de la extendida" si tiene el mismo nombre
     std::string firstName(ebr.part_name, 16);
     size_t nul = firstName.find('\0');
     if (nul != std::string::npos) firstName = firstName.substr(0, nul);
     
     if (firstName == extendedName) {
-        // Es el EBR de la extendida, saltarlo
         if (ebr.part_next != -1) {
             ebrPos = ebr.part_next;
         } else {
-            // No hay siguiente, la extendida está vacía
             diskFile.seekg(currentPos, std::ios::beg);
             return;
         }
@@ -58,7 +74,7 @@ static void readLogicalPartitions(std::ifstream& diskFile,
         nul = partName.find('\0');
         if (nul != std::string::npos) partName = partName.substr(0, nul);
         
-        // ✅ CORREGIDO: Saltar si aún tiene el nombre de la extendida
+        // Saltar si aún tiene el nombre de la extendida
         if (partName == extendedName) {
             if (ebr.part_next == -1) break;
             ebrPos = ebr.part_next;
@@ -71,6 +87,7 @@ static void readLogicalPartitions(std::ifstream& diskFile,
         part["size"] = ebr.part_s;
         part["start"] = ebr.part_start;
         part["status"] = std::string(1, ebr.part_mount);
+        part["fit"] = fitToString(ebr.part_fit);  // ✅ NUEVO
         part["id"] = "";
         partitions.push_back(part);
         partCount++;
@@ -112,8 +129,14 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                     MBR mbr;
                     diskFile.read(reinterpret_cast<char*>(&mbr), sizeof(MBR));
                     
+                    // ✅ NUEVO: Agregar fit y fecha del disco
+                    diskInfo["fit"] = fitToString(mbr.dsk_fit);
+                    diskInfo["date"] = formatDate(mbr.mbr_fecha_creacion);
+                    diskInfo["signature"] = mbr.mbr_dsk_signature;
+                    
                     json partitions = json::array();
                     int partCount = 0;
+                    int mountedCount = 0;
                     
                     for (int i = 0; i < 4; i++) {
                         if (mbr.mbr_partitions[i].part_s > 0) {
@@ -131,15 +154,19 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                             part["size"] = mbr.mbr_partitions[i].part_s;
                             part["start"] = mbr.mbr_partitions[i].part_start;
                             part["status"] = std::string(1, mbr.mbr_partitions[i].part_status);
+                            part["fit"] = fitToString(mbr.mbr_partitions[i].part_fit);  // ✅ NUEVO
                             part["id"] = partId;
                             partitions.push_back(part);
                             partCount++;
                             
-                            // ✅ CORREGIDO: Pasar el nombre de la extendida
+                            if (mbr.mbr_partitions[i].part_status == '1') {
+                                mountedCount++;  // ✅ NUEVO
+                            }
+                            
                             if (mbr.mbr_partitions[i].part_type == 'E') {
                                 readLogicalPartitions(diskFile, 
                                                      mbr.mbr_partitions[i].part_start,
-                                                     partName,   // ← nombre de la extendida
+                                                     partName,
                                                      partitions, 
                                                      partCount);
                             }
@@ -150,9 +177,14 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                     
                     diskInfo["partitions"] = partitions;
                     diskInfo["partition_count"] = partCount;
+                    diskInfo["mounted_count"] = mountedCount;  // ✅ NUEVO
                 } else {
                     diskInfo["partitions"] = json::array();
                     diskInfo["partition_count"] = 0;
+                    diskInfo["mounted_count"] = 0;
+                    diskInfo["fit"] = "Desconocido";
+                    diskInfo["date"] = "";
+                    diskInfo["signature"] = 0;
                 }
                 
                 diskList.push_back(diskInfo);
