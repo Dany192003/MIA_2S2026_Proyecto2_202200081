@@ -386,10 +386,6 @@ static void copyFolderRecursive(std::fstream& disk, const Superblock& sb,
                 }
             } else {
                 // Es carpeta → crear carpeta y recursión
-                // Nota: createDirectory abre su propio fstream, así que cerramos y reabrimos
-                // Para simplicidad, usamos el mismo enfoque
-                // (esto podría optimizarse, pero funciona)
-                // TODO: Mejorar para no reabrir el archivo
                 copiedCount++;
                 copyFolderRecursive(disk, sb, childInode, childDestPath,
                                      destUid, destGid, uid, gid, user, userLines,
@@ -575,6 +571,11 @@ CommandResult CommandHandler::processCopy(const json& params) {
         Ext2Utils::writeSuperblock(diskPath, sbUpdated, mbr, partitionIndex);
         
         disk.close();
+        
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "copy", path, finalDestPath);
+        }
         
         // 15. Éxito
         result.success = true;

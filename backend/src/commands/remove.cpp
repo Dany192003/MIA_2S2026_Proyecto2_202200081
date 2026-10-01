@@ -28,7 +28,7 @@ static bool hasWritePermission(const std::string& perms, const std::string& user
 }
 
 // ============================================================
-// Obtener GID actual del usuario (reutilizado de cat.cpp)
+// Obtener GID actual del usuario
 // ============================================================
 static int getCurrentUserGid(const std::vector<std::string>& userLines, const std::string& username) {
     for (const auto& line : userLines) {
@@ -143,7 +143,6 @@ static void freeInodeAndBlocks(std::fstream& disk, const Superblock& sb, int ino
 
 // ============================================================
 // Recolectar todos los inodos a eliminar (recursivo)
-// Retorna false si algún hijo no tiene permiso
 // ============================================================
 static bool collectInodesToDelete(std::fstream& disk, const Superblock& sb,
                                    int inodeIndex, int uid, int gid,
@@ -153,19 +152,16 @@ static bool collectInodesToDelete(std::fstream& disk, const Superblock& sb,
                                    std::vector<std::pair<int, std::string>>& parentEntriesToRemove) {
     Inode inode = Ext2Utils::readInode(disk, sb, inodeIndex);
     
-    // Verificar permisos de escritura sobre este inodo
     std::string perms(inode.i_perm, 3);
     if (!hasWritePermission(perms, user, uid, gid, inode.i_uid, inode.i_gid)) {
         return false;
     }
     
     if (inode.i_type == '1') {
-        // Es archivo → agregar a la lista
         inodesToDelete.push_back(inodeIndex);
         return true;
     }
     
-    // Es carpeta → recorrer sus entradas
     for (int b = 0; b < 12; b++) {
         if (inode.i_block[b] == -1) continue;
         
@@ -179,28 +175,23 @@ static bool collectInodesToDelete(std::fstream& disk, const Superblock& sb,
             if (block.b_content[i].b_inodo == -1) continue;
             
             int childInode = block.b_content[i].b_inodo;
-            
-            // Verificar permisos de escritura sobre el hijo
             Inode child = Ext2Utils::readInode(disk, sb, childInode);
             std::string childPerms(child.i_perm, 3);
             if (!hasWritePermission(childPerms, user, uid, gid, child.i_uid, child.i_gid)) {
-                return false;  // No se puede eliminar el hijo → abortar todo
+                return false;
             }
             
             if (child.i_type == '0') {
-                // Subcarpeta → recursión
                 if (!collectInodesToDelete(disk, sb, childInode, uid, gid, user,
                                             userLines, inodesToDelete, parentEntriesToRemove)) {
                     return false;
                 }
             } else {
-                // Archivo → agregar
                 inodesToDelete.push_back(childInode);
             }
         }
     }
     
-    // Agregar la carpeta actual al final (post-order)
     inodesToDelete.push_back(inodeIndex);
     return true;
 }
@@ -231,11 +222,12 @@ CommandResult CommandHandler::processRemove(const json& params) {
             return result;
         }
         
-                // FIX CRÍTICO: users.txt solo lo puede borrar root
+        // FIX CRÍTICO: users.txt solo lo puede borrar root
         if (path == "/users.txt" && !isRoot()) {
             result.message = "Error: Solo el usuario root puede eliminar /users.txt";
             return result;
         }
+        
         // 3. Obtener info de sesión
         std::string diskPath = currentSession.diskPath;
         std::string mountId = currentSession.mountId;
@@ -363,6 +355,11 @@ CommandResult CommandHandler::processRemove(const json& params) {
         Ext2Utils::writeSuperblock(diskPath, sbUpdated, mbr, partitionIndex);
         
         disk.close();
+        
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "remove", path, "");
+        }
         
         // 14. Éxito
         result.success = true;

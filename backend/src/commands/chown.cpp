@@ -265,6 +265,11 @@ CommandResult CommandHandler::processChown(const json& params) {
         
         disk.close();
         
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "chown", path, newUser);
+        }
+        
         // 14. Éxito
         result.success = true;
         result.message = "Propietario cambiado exitosamente: " + path + " → " + newUser + 

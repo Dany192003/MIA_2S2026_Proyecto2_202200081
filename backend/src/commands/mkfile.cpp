@@ -154,6 +154,11 @@ CommandResult CommandHandler::processMkfile(const json& params) {
                                 result.message = "Error: No se pudo crear la carpeta: " + testPath;
                                 return result;
                             }
+                            
+                            // ✅ NUEVO: Registrar en journal
+                            if (sb.s_filesystem_type == 3) {
+                                writeJournal(sb, partitionIndex, "mkdir", testPath, "");
+                            }
                         }
                         currentPath = testPath + "/";
                     }
@@ -201,6 +206,11 @@ CommandResult CommandHandler::processMkfile(const json& params) {
         if (!Ext2Utils::writeFile(diskPath, path, content, sb, mbr, partitionIndex, uid, gid)) {
             result.message = "Error: No se pudo crear el archivo en EXT2: " + path;
             return result;
+        }
+        
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "mkfile", path, content.substr(0, 63));
         }
         
         result.success = true;

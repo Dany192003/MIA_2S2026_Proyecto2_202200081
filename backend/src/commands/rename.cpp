@@ -246,6 +246,11 @@ CommandResult CommandHandler::processRename(const json& params) {
         
         disk.close();
         
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "rename", path, newName);
+        }
+        
         // 14. Éxito
         result.success = true;
         result.message = "Renombrado exitosamente: '" + oldName + "' → '" + newName + "'";

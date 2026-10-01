@@ -322,6 +322,11 @@ CommandResult CommandHandler::processMove(const json& params) {
         
         disk.close();
         
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "move", path, finalDestPath);
+        }
+        
         // 18. Éxito
         result.success = true;
         result.message = "Movido exitosamente: '" + path + "' → '" + finalDestPath + "'";

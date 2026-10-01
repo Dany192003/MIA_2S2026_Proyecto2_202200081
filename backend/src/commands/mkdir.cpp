@@ -131,6 +131,11 @@ CommandResult CommandHandler::processMkdir(const json& params) {
                                 result.message = "Error: No se pudo crear la carpeta en EXT2: " + testPath;
                                 return result;
                             }
+                            
+                            // ✅ NUEVO: Registrar en journal
+                            if (sb.s_filesystem_type == 3) {
+                                writeJournal(sb, partitionIndex, "mkdir", testPath, "");
+                            }
                         }
                         currentPath = testPath + "/";
                     }
@@ -157,6 +162,11 @@ CommandResult CommandHandler::processMkdir(const json& params) {
         if (!Ext2Utils::createDirectory(diskPath, path, sb, mbr, partitionIndex, uid, gid)) {
             result.message = "Error: No se pudo crear la carpeta en EXT2: " + path;
             return result;
+        }
+        
+        // ✅ NUEVO: Registrar en journal
+        if (sb.s_filesystem_type == 3) {
+            writeJournal(sb, partitionIndex, "mkdir", path, "");
         }
         
         result.success = true;
