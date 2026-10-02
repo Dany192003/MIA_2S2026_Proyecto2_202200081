@@ -136,8 +136,8 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         sb.s_magic = EXT2_MAGIC;
         sb.s_inode_s = (int)sizeof(Inode);
         sb.s_block_s = (int)sizeof(BlockFile);
-        sb.s_first_ino = 0;
-        sb.s_first_blo = 0;
+        sb.s_first_ino = 0;  // Se actualiza al final
+        sb.s_first_blo = 0;  // Se actualiza al final
         
         if (fsNumber == 3) {
             int64_t currentOffset = partitionStart + sizeof(Superblock);
@@ -220,6 +220,7 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         char zeroBlock[sizeof(BlockFile)] = {0};
         for (int i = 0; i < numBlocks; i++) disk.write(zeroBlock, sizeof(BlockFile));
         
+        // Crear inodo raíz (inodo 0)
         Inode rootInode;
         memset(&rootInode, 0, sizeof(Inode));
         rootInode.i_uid = 1;
@@ -265,9 +266,7 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         
         Ext2Utils::writeSuperblock(diskPath, sb, mbr, partitionIndex);
         
-        // ============================================================
-        // 18. Crear users.txt en la raíz
-        // ============================================================
+        // Crear users.txt en la raíz
         std::string defaultUsers = "1, G, root\n1, U, root, root, 123\n";
         if (!Ext2Utils::writeFile(diskPath, "/users.txt", defaultUsers, sb, mbr, partitionIndex, 1, 1)) {
             result.message = "Error: No se pudo crear users.txt durante el formateo";
@@ -276,7 +275,7 @@ CommandResult CommandHandler::processMkfs(const json& params) {
         
         Superblock sbFinal = Ext2Utils::readSuperblock(diskPath, mbr, partitionIndex);
         
-        // ✅ FIX CRÍTICO: Cambiar permisos de /users.txt a 600
+        // ✅ FIX: Cambiar permisos de /users.txt a 600
         int usersInode = Ext2Utils::findInodeByPath(diskPath, "/users.txt", sbFinal, mbr, partitionIndex);
         if (usersInode != -1) {
             std::fstream diskFix(diskPath, std::ios::in | std::ios::out | std::ios::binary);
@@ -287,6 +286,27 @@ CommandResult CommandHandler::processMkfs(const json& params) {
                 uInode.i_perm[2] = '0';  // Other: ---
                 Ext2Utils::writeInode(diskFix, sbFinal, usersInode, uInode);
                 diskFix.close();
+            }
+        }
+        
+        // ============================================================
+        // ✅ FIX BUG #3: Actualizar s_first_ino y s_first_blo
+        // ============================================================
+        {
+            std::fstream diskFinal(diskPath, std::ios::in | std::ios::out | std::ios::binary);
+            if (diskFinal.is_open()) {
+                // Recalcular primer inodo libre
+                int firstFreeInode = Ext2Utils::findFreeInode(diskFinal, sbFinal);
+                int firstFreeBlock = Ext2Utils::findFreeBlock(diskFinal, sbFinal);
+                
+                sbFinal.s_first_ino = (firstFreeInode != -1) ? firstFreeInode : 0;
+                sbFinal.s_first_blo = (firstFreeBlock != -1) ? firstFreeBlock : 0;
+                
+                // Escribir superbloque actualizado
+                diskFinal.seekp(mbr.mbr_partitions[partitionIndex].part_start, std::ios::beg);
+                diskFinal.write(reinterpret_cast<const char*>(&sbFinal), sizeof(Superblock));
+                
+                diskFinal.close();
             }
         }
         
@@ -301,7 +321,9 @@ CommandResult CommandHandler::processMkfs(const json& params) {
             {"inodes", sbFinal.s_inodes_count},
             {"blocks", sbFinal.s_blocks_count},
             {"free_inodes", sbFinal.s_free_inodes_count},
-            {"free_blocks", sbFinal.s_free_blocks_count}
+            {"free_blocks", sbFinal.s_free_blocks_count},
+            {"first_ino", sbFinal.s_first_ino},
+            {"first_blo", sbFinal.s_first_blo}
         };
         
     } catch (const std::exception& e) {

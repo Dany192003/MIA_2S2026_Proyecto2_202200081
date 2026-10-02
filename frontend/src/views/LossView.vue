@@ -28,42 +28,14 @@
       </div>
     </div>
 
-    <!-- PASO 2: Reportes ANTES -->
-    <div class="step-box" :class="{ 'disabled': !mountId || executed }">
-      <div class="step-header">
-        <span class="step-num">2</span>
-        <span class="step-title">Generar reportes ANTES del LOSS</span>
-      </div>
-      <div class="step-content">
-        <p class="step-hint">Genera los reportes de bitmaps para comparar después.</p>
-        <button
-          class="btn-report"
-          :disabled="!mountId || loadingReports || executed"
-          @click="generateReportsBefore"
-        >
-          {{ loadingReports ? 'Generando...' : '📊 Generar reportes ANTES' }}
-        </button>
-
-        <div v-if="reportsBefore.length > 0" class="reports-list">
-          <div v-for="report in reportsBefore" :key="report.path" class="report-item">
-            <span class="report-icon">✅</span>
-            <div class="report-info">
-              <span class="report-name">{{ report.name }}</span>
-              <span class="report-path">{{ report.path }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PASO 3: Ejecutar LOSS -->
+    <!-- PASO 2: Ejecutar LOSS -->
     <div class="step-box danger" :class="{ 'disabled': !mountId || executed }">
       <div class="step-header">
-        <span class="step-num">3</span>
+        <span class="step-num">2</span>
         <span class="step-title">Ejecutar LOSS</span>
       </div>
       <div class="step-content">
-        <p class="step-hint">Esta acción es irreversible.</p>
+        <p class="step-hint">Esta acción es irreversible. Los reportes se generarán automáticamente antes y después.</p>
         <button
           class="btn-loss"
           :disabled="!mountId || loading || executed"
@@ -78,25 +50,37 @@
       </div>
     </div>
 
-    <!-- PASO 4: Reportes DESPUÉS -->
-    <div class="step-box" :class="{ 'disabled': !executed }">
+    <!-- PASO 3: Reportes ANTES -->
+    <div v-if="reportsAntes.length > 0" class="step-box">
       <div class="step-header">
-        <span class="step-num">4</span>
-        <span class="step-title">Generar reportes DESPUÉS del LOSS</span>
+        <span class="step-num">3</span>
+        <span class="step-title">Reportes ANTES del LOSS</span>
       </div>
       <div class="step-content">
-        <p class="step-hint">Compara con los reportes generados antes.</p>
-        <button
-          class="btn-report"
-          :disabled="!executed || loadingReports"
-          @click="generateReportsAfter"
-        >
-          {{ loadingReports ? 'Generando...' : '📊 Generar reportes DESPUÉS' }}
-        </button>
+        <p class="step-hint">Estado del sistema de archivos antes del fallo.</p>
+        <div class="reports-list">
+          <div v-for="report in reportsAntes" :key="report.path" class="report-item">
+            <span class="report-icon">{{ report.name.includes('bm_') ? '📄' : '🖼️' }}</span>
+            <div class="report-info">
+              <span class="report-name">{{ report.name }}</span>
+              <span class="report-path">{{ report.path }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <div v-if="reportsAfter.length > 0" class="reports-list">
-          <div v-for="report in reportsAfter" :key="report.path" class="report-item">
-            <span class="report-icon">✅</span>
+    <!-- PASO 4: Reportes DESPUÉS -->
+    <div v-if="reportsDespues.length > 0" class="step-box success">
+      <div class="step-header">
+        <span class="step-num">4</span>
+        <span class="step-title">Reportes DESPUÉS del LOSS</span>
+      </div>
+      <div class="step-content">
+        <p class="step-hint">Estado del sistema de archivos después del fallo. Los bitmaps deberían estar vacíos.</p>
+        <div class="reports-list">
+          <div v-for="report in reportsDespues" :key="report.path" class="report-item">
+            <span class="report-icon">{{ report.name.includes('bm_') ? '📄' : '🖼️' }}</span>
             <div class="report-info">
               <span class="report-name">{{ report.name }}</span>
               <span class="report-path">{{ report.path }}</span>
@@ -107,13 +91,13 @@
     </div>
 
     <!-- PASO 5: Comparación -->
-    <div v-if="reportsBefore.length > 0 && reportsAfter.length > 0" class="step-box success">
+    <div v-if="reportsAntes.length > 0 && reportsDespues.length > 0" class="step-box success">
       <div class="step-header">
         <span class="step-num">✓</span>
         <span class="step-title">Comparación completa</span>
       </div>
       <div class="step-content">
-        <p class="step-hint">Abre los reportes para ver la diferencia. Los bitmaps deberían estar vacíos después del LOSS.</p>
+        <p class="step-hint">Compara los reportes. Los bitmaps ANTES deben tener bits en 1; los DESPUÉS deben estar en 0.</p>
         <button class="btn-reset" @click="reset">🔄 Realizar otra prueba</button>
       </div>
     </div>
@@ -129,70 +113,14 @@ export default {
     return {
       mountId: '',
       loading: false,
-      loadingReports: false,
       message: null,
       success: false,
       executed: false,
-      reportsBefore: [],
-      reportsAfter: []
+      reportsAntes: [],
+      reportsDespues: []
     }
   },
   methods: {
-    async generateReportsBefore() {
-      if (!this.mountId) return
-      this.loadingReports = true
-      this.reportsBefore = []
-
-      const timestamp = Date.now()
-
-      // ✅ CAMBIO: Rutas relativas (el backend las resuelve contra EXT2_REPORTS_DIR)
-      const reports = [
-        { name: 'bm_inode', file: `loss_antes_bm_inode_${timestamp}.txt` },
-        { name: 'bm_block', file: `loss_antes_bm_block_${timestamp}.txt` },
-        { name: 'inode', file: `loss_antes_inode_${timestamp}.jpg` },
-        { name: 'block', file: `loss_antes_block_${timestamp}.jpg` }
-      ]
-
-      for (const r of reports) {
-        // ✅ CAMBIO: Enviar solo el nombre del archivo, no la ruta absoluta
-        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${r.file} -name=${r.name}`)
-        if (result.success) {
-          // ✅ Mostrar la ruta resuelta que devuelve el backend
-          const resolvedPath = result.data?.data?.report?.path || r.file
-          this.reportsBefore.push({ name: r.name, path: resolvedPath })
-        }
-      }
-
-      this.loadingReports = false
-    },
-
-    async generateReportsAfter() {
-      if (!this.mountId) return
-      this.loadingReports = true
-      this.reportsAfter = []
-
-      const timestamp = Date.now()
-
-      // ✅ CAMBIO: Rutas relativas
-      const reports = [
-        { name: 'bm_inode', file: `loss_despues_bm_inode_${timestamp}.txt` },
-        { name: 'bm_block', file: `loss_despues_bm_block_${timestamp}.txt` },
-        { name: 'inode', file: `loss_despues_inode_${timestamp}.jpg` },
-        { name: 'block', file: `loss_despues_block_${timestamp}.jpg` }
-      ]
-
-      for (const r of reports) {
-        // ✅ CAMBIO: Enviar solo el nombre del archivo
-        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${r.file} -name=${r.name}`)
-        if (result.success) {
-          const resolvedPath = result.data?.data?.report?.path || r.file
-          this.reportsAfter.push({ name: r.name, path: resolvedPath })
-        }
-      }
-
-      this.loadingReports = false
-    },
-
     async executeLoss() {
       if (!confirm('¿Está seguro? Esta operación corromperá el sistema de archivos.')) {
         return
@@ -200,13 +128,23 @@ export default {
 
       this.loading = true
       this.message = null
+      this.reportsAntes = []
+      this.reportsDespues = []
 
       try {
         const result = await analyzeCommand(`loss -id=${this.mountId}`)
+        
         if (result.success && result.data?.data?.loss) {
+          const lossData = result.data.data.loss
           this.success = true
-          this.message = result.data.data.message || 'LOSS ejecutado exitosamente'
+          this.message = result.data.message || 'LOSS ejecutado exitosamente'
           this.executed = true
+          
+          // ✅ Extraer reportes antes/después del backend
+          if (lossData.reports) {
+            this.reportsAntes = lossData.reports.antes || []
+            this.reportsDespues = lossData.reports.despues || []
+          }
         } else {
           this.success = false
           this.message = result.data?.message || result.error || 'Error al ejecutar LOSS'
@@ -223,8 +161,8 @@ export default {
       this.message = null
       this.success = false
       this.executed = false
-      this.reportsBefore = []
-      this.reportsAfter = []
+      this.reportsAntes = []
+      this.reportsDespues = []
     }
   }
 }
@@ -382,7 +320,6 @@ export default {
   cursor: not-allowed;
 }
 
-.btn-report,
 .btn-loss,
 .btn-reset {
   padding: 10px 20px;
@@ -392,15 +329,6 @@ export default {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 13px;
-}
-
-.btn-report {
-  background: #58a6ff;
-  color: #0d1117;
-}
-
-.btn-report:hover:not(:disabled) {
-  background: #79c0ff;
 }
 
 .btn-loss {
@@ -423,7 +351,6 @@ export default {
   color: #e6edf3;
 }
 
-.btn-report:disabled,
 .btn-loss:disabled,
 .btn-reset:disabled {
   opacity: 0.5;

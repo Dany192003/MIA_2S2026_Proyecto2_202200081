@@ -1,5 +1,6 @@
 #include "command_handler.h"
 #include "../utils/ext2_utils.h"
+#include "reports/Report.h"
 #include <fstream>
 #include <cstring>
 #include <ctime>
@@ -15,6 +16,8 @@
 //    - Bloque de bitmap de Bloques
 //    - Área de Inodos
 //    - Área de Bloques."
+//
+// "Se debe mostrar los reportes de bitmap antes de la ejecución y después."
 //
 // NO toca el superbloque (para que siga siendo un EXT3 válido)
 // NO toca el journaling (para que el journaling siga funcionando)
@@ -94,9 +97,45 @@ CommandResult CommandHandler::processLoss(const json& params) {
         }
         
         // ============================================================
-        // 10. Timestamp para el reporte de resultado
+        // 10. Generar reportes ANTES del LOSS
         // ============================================================
         std::string timestamp = std::to_string(time(nullptr));
+        std::string reportsDir = Ext2Utils::getReportsDir();
+        std::string errMsg;
+        
+        std::vector<std::pair<std::string, std::string>> reportsAntes;
+        
+        // 10.1 Bitmap de inodos (TXT)
+        {
+            std::string path = reportsDir + "loss_antes_bm_inode_" + timestamp + ".txt";
+            if (Reports::ReportBMInode(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsAntes.push_back({"bm_inode", path});
+            }
+        }
+        
+        // 10.2 Bitmap de bloques (TXT)
+        {
+            std::string path = reportsDir + "loss_antes_bm_block_" + timestamp + ".txt";
+            if (Reports::ReportBMBlock(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsAntes.push_back({"bm_block", path});
+            }
+        }
+        
+        // 10.3 Inodos (PNG vía Graphviz)
+        {
+            std::string path = reportsDir + "loss_antes_inode_" + timestamp + ".png";
+            if (Reports::ReportINODE(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsAntes.push_back({"inode", path});
+            }
+        }
+        
+        // 10.4 Bloques (PNG vía Graphviz)
+        {
+            std::string path = reportsDir + "loss_antes_block_" + timestamp + ".png";
+            if (Reports::ReportBLOCK(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsAntes.push_back({"block", path});
+            }
+        }
         
         // ============================================================
         // 11. Limpiar los 4 bloques críticos con \0
@@ -163,8 +202,62 @@ CommandResult CommandHandler::processLoss(const json& params) {
         disk.close();
         
         // ============================================================
-        // 13. Éxito
+        // 13. Generar reportes DESPUÉS del LOSS
         // ============================================================
+        std::vector<std::pair<std::string, std::string>> reportsDespues;
+        
+        // 13.1 Bitmap de inodos (TXT)
+        {
+            std::string path = reportsDir + "loss_despues_bm_inode_" + timestamp + ".txt";
+            if (Reports::ReportBMInode(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsDespues.push_back({"bm_inode", path});
+            }
+        }
+        
+        // 13.2 Bitmap de bloques (TXT)
+        {
+            std::string path = reportsDir + "loss_despues_bm_block_" + timestamp + ".txt";
+            if (Reports::ReportBMBlock(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsDespues.push_back({"bm_block", path});
+            }
+        }
+        
+        // 13.3 Inodos (PNG vía Graphviz)
+        {
+            std::string path = reportsDir + "loss_despues_inode_" + timestamp + ".png";
+            if (Reports::ReportINODE(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsDespues.push_back({"inode", path});
+            }
+        }
+        
+        // 13.4 Bloques (PNG vía Graphviz)
+        {
+            std::string path = reportsDir + "loss_despues_block_" + timestamp + ".png";
+            if (Reports::ReportBLOCK(diskPath, mbr, partitionIndex, path, errMsg)) {
+                reportsDespues.push_back({"block", path});
+            }
+        }
+        
+        // ============================================================
+        // 14. Construir respuesta JSON con los reportes
+        // ============================================================
+        
+        json antesArray = json::array();
+        for (const auto& r : reportsAntes) {
+            json item;
+            item["name"] = r.first;
+            item["path"] = r.second;
+            antesArray.push_back(item);
+        }
+        
+        json despuesArray = json::array();
+        for (const auto& r : reportsDespues) {
+            json item;
+            item["name"] = r.first;
+            item["path"] = r.second;
+            despuesArray.push_back(item);
+        }
+        
         result.success = true;
         result.message = "Pérdida del sistema de archivos simulada exitosamente en el ID: " + id;
         result.data["loss"] = {
@@ -180,7 +273,11 @@ CommandResult CommandHandler::processLoss(const json& params) {
                 {"block_table", blockTableSize},
                 {"total_bytes", totalZeroed}
             }},
-            {"note", "El superbloque y el journaling NO fueron modificados. Use 'rep -name=bm_inode' y 'rep -name=bm_block' para verificar."}
+            {"reports", {
+                {"antes", antesArray},
+                {"despues", despuesArray}
+            }},
+            {"note", "El superbloque y el journaling NO fueron modificados."}
         };
         
     } catch (const std::exception& e) {
