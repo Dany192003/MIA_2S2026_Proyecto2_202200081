@@ -50,12 +50,22 @@ CommandResult CommandHandler::processLogin(const json& params) {
             }
         }
         
-        if (partitionIndex == -1) {
-            disk.close();
-            result.message = "Error: No se encontró la partición para el ID: " + id;
-            return result;
-        }
-        disk.close();
+if (partitionIndex == -1) {
+    disk.close();
+    result.message = "Error: No se encontró la partición para el ID: " + id;
+    return result;
+}
+
+// ✅ Rechazar extendidas (según PDF)
+if (mbr.mbr_partitions[partitionIndex].part_type == 'E') {
+    disk.close();
+    result.message = "Error: No se puede iniciar sesión en una partición extendida";
+    return result;
+}
+
+// ✅ Rechazar lógicas: si el ID no es del MBR, no se puede hacer login
+// (las lógicas no tienen sistema de archivos en este proyecto)
+disk.close();
         
         Superblock sb = Ext2Utils::readSuperblock(diskPath, mbr, partitionIndex);
         std::string usersContent = Ext2Utils::readFile(diskPath, "/users.txt", sb, mbr, partitionIndex);

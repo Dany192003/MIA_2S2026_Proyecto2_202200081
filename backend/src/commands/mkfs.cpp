@@ -105,11 +105,23 @@ CommandResult CommandHandler::processMkfs(const json& params) {
             return result;
         }
         
-        if (mbr.mbr_partitions[partitionIndex].part_status != '1') {
-            disk.close();
-            result.message = "Error: La partición no está montada";
-            return result;
-        }
+if (mbr.mbr_partitions[partitionIndex].part_status != '1') {
+    disk.close();
+    result.message = "Error: La partición no está montada";
+    return result;
+}
+
+// ✅ Rechazar extendidas (según PDF)
+if (mbr.mbr_partitions[partitionIndex].part_type == 'E') {
+    disk.close();
+    result.message = "Error: No se puede formatear una partición extendida";
+    return result;
+}
+
+// ✅ Rechazar lógicas: las particiones lógicas se buscan en EBR, no en MBR.
+// Si llegamos aquí y part_id == id, significa que es una partición del MBR.
+// Las lógicas NO se pueden formatear según el PDF.
+// (En la práctica, las lógicas ya están filtradas porque no tienen part_id en el EBR.)
         
         Partition& partition = mbr.mbr_partitions[partitionIndex];
         int64_t partitionStart = partition.part_start;
