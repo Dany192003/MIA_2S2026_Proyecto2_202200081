@@ -22,9 +22,9 @@
       </nav>
 
       <div class="session-info">
-        <template v-if="isLoggedIn">
-          <span class="user-badge">👤 {{ currentUser }}</span>
-          <span class="mount-badge">ID: {{ mountId }}</span>
+        <template v-if="store.state.isLoggedIn">
+          <span class="user-badge">👤 {{ store.state.currentUser }}</span>
+          <span class="mount-badge">ID: {{ store.state.mountId }}</span>
           <button class="btn-logout" @click="handleLogout">Cerrar Sesión</button>
         </template>
         <template v-else>
@@ -36,21 +36,24 @@
 </template>
 
 <script>
+import { inject } from 'vue'
 import { getSessionStatus, logoutUser } from '../../services/api.js'
 
 export default {
   name: 'AppHeader',
   data() {
     return {
-      isLoggedIn: false,
-      currentUser: '',
-      mountId: '',
       checkInterval: null
     }
   },
+  setup() {
+    const store = inject('store')
+    return { store }
+  },
   mounted() {
     this.checkSession()
-    this.checkInterval = setInterval(this.checkSession, 3000)
+    // Reducir intervalo a 2 segundos para mejor respuesta
+    this.checkInterval = setInterval(this.checkSession, 2000)
   },
   beforeUnmount() {
     if (this.checkInterval) {
@@ -61,9 +64,8 @@ export default {
     async checkSession() {
       const result = await getSessionStatus()
       if (result.success && result.data) {
-        this.isLoggedIn = result.data.active === true
-        this.currentUser = result.data.user || ''
-        this.mountId = result.data.mountId || ''
+        // ✅ Actualizar store (que es reactivo)
+        this.store.actions.setSession(result.data)
       }
     },
 
@@ -71,9 +73,8 @@ export default {
       if (!confirm('¿Cerrar sesión?')) return
       const result = await logoutUser()
       if (result.success) {
-        this.isLoggedIn = false
-        this.currentUser = ''
-        this.mountId = ''
+        // ✅ Limpiar store
+        this.store.actions.clearSession()
         this.$router.push('/login')
       }
     }
@@ -82,6 +83,7 @@ export default {
 </script>
 
 <style scoped>
+/* Los mismos estilos que ya tienes */
 .app-header {
   background: #0d1117;
   border-bottom: 1px solid #30363d;

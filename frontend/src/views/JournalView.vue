@@ -2,9 +2,10 @@
   <div class="journal-view">
     <div class="view-header">
       <h1>📓 Journaling</h1>
-      <p>Bitácora de transacciones de la partición</p>
+      <p>Bitácora de transacciones de la partición EXT3</p>
     </div>
 
+    <!-- Controles -->
     <div class="controls">
       <input
         v-model="mountId"
@@ -14,13 +15,38 @@
         @keyup.enter="loadJournal"
       />
       <button class="btn-load" :disabled="loading || !mountId" @click="loadJournal">
-        {{ loading ? 'Cargando...' : 'Cargar Journal' }}
+        {{ loading ? 'Cargando...' : '🔄 Cargar Journal' }}
       </button>
     </div>
 
-    <div v-if="error" class="error-state">{{ error }}</div>
+    <!-- Error -->
+    <div v-if="error" class="error-state">
+      <span class="error-icon">⚠️</span>
+      <span class="error-text">{{ error }}</span>
+    </div>
 
-    <div v-if="entries.length > 0" class="journal-table">
+    <!-- Filtros -->
+    <div v-if="entries.length > 0" class="filters">
+      <button
+        class="filter-btn"
+        :class="{ active: activeFilter === 'all' }"
+        @click="activeFilter = 'all'"
+      >
+        Todas ({{ entries.length }})
+      </button>
+      <button
+        v-for="op in availableOperations"
+        :key="op"
+        class="filter-btn"
+        :class="['op-' + op, { active: activeFilter === op }]"
+        @click="activeFilter = op"
+      >
+        {{ op }} ({{ countByOperation(op) }})
+      </button>
+    </div>
+
+    <!-- Tabla -->
+    <div v-if="filteredEntries.length > 0" class="journal-table">
       <table>
         <thead>
           <tr>
@@ -32,7 +58,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="entry in entries" :key="entry.count">
+          <tr v-for="entry in filteredEntries" :key="entry.count">
             <td class="td-count">{{ entry.count }}</td>
             <td class="td-op">
               <span class="op-badge" :class="'op-' + entry.operation">
@@ -40,16 +66,31 @@
               </span>
             </td>
             <td class="td-path">{{ entry.path }}</td>
-            <td class="td-content">{{ entry.content }}</td>
+            <td class="td-content" :title="entry.content">{{ entry.content }}</td>
             <td class="td-date">{{ entry.date }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div v-else-if="!loading && !error" class="empty-state">
+    <!-- Sin resultados -->
+    <div v-else-if="entries.length > 0 && filteredEntries.length === 0" class="empty-state">
+      <p>No hay transacciones con la operación "{{ activeFilter }}"</p>
+      <button class="btn-reset-filter" @click="activeFilter = 'all'">Ver todas</button>
+    </div>
+
+    <!-- Sin datos -->
+    <div v-else-if="!loading && !error && hasLoaded" class="empty-state">
+      <span class="empty-icon">📭</span>
       <p>No hay transacciones registradas</p>
       <small>Realice operaciones (mkdir, mkfile, etc.) y vuelva a cargar</small>
+    </div>
+
+    <!-- Estado inicial -->
+    <div v-else-if="!loading && !error && !hasLoaded" class="empty-state">
+      <span class="empty-icon">📓</span>
+      <p>Ingrese un ID de partición y presione "Cargar Journal"</p>
+      <small>Solo funciona en particiones formateadas como EXT3</small>
     </div>
   </div>
 </template>
@@ -64,11 +105,25 @@ export default {
       mountId: '',
       entries: [],
       loading: false,
-      error: null
+      error: null,
+      activeFilter: 'all',
+      hasLoaded: false
+    }
+  },
+  computed: {
+    availableOperations() {
+      const ops = new Set()
+      for (const entry of this.entries) {
+        ops.add(entry.operation)
+      }
+      return Array.from(ops).sort()
+    },
+    filteredEntries() {
+      if (this.activeFilter === 'all') return this.entries
+      return this.entries.filter(e => e.operation === this.activeFilter)
     }
   },
   mounted() {
-    // Intentar cargar la sesión actual
     const session = this.$store?.state
     if (session?.mountId) {
       this.mountId = session.mountId
@@ -76,21 +131,29 @@ export default {
     }
   },
   methods: {
+    countByOperation(op) {
+      return this.entries.filter(e => e.operation === op).length
+    },
+
     async loadJournal() {
       if (!this.mountId) return
       this.loading = true
       this.error = null
       this.entries = []
+      this.activeFilter = 'all'
 
       try {
         const result = await analyzeCommand(`journaling -id=${this.mountId}`)
         if (result.success && result.data?.data?.journaling) {
           this.entries = result.data.data.journaling.entries || []
+          this.hasLoaded = true
         } else {
           this.error = result.data?.message || 'Error al cargar journal'
+          this.hasLoaded = true
         }
       } catch (err) {
         this.error = 'Error de conexión: ' + err.message
+        this.hasLoaded = true
       }
       this.loading = false
     }
@@ -166,6 +229,48 @@ export default {
   cursor: not-allowed;
 }
 
+/* ✅ NUEVO: Filtros */
+.filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #30363d;
+  border-radius: 20px;
+  color: #8b949e;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: #58a6ff;
+  color: #e6edf3;
+}
+
+.filter-btn.active {
+  background: #58a6ff;
+  border-color: #58a6ff;
+  color: #0d1117;
+  font-weight: 600;
+}
+
+.filter-btn.active.op-mkdir { background: #58a6ff; border-color: #58a6ff; }
+.filter-btn.active.op-mkfile { background: #3fb950; border-color: #3fb950; color: #0d1117; }
+.filter-btn.active.op-remove { background: #f85149; border-color: #f85149; color: #ffffff; }
+.filter-btn.active.op-rename { background: #d29922; border-color: #d29922; color: #0d1117; }
+.filter-btn.active.op-copy { background: #a371f7; border-color: #a371f7; color: #ffffff; }
+.filter-btn.active.op-move { background: #db6d28; border-color: #db6d28; color: #ffffff; }
+.filter-btn.active.op-chown { background: #ec4899; border-color: #ec4899; color: #ffffff; }
+
+/* Tabla */
 .journal-table {
   background: #161b22;
   border: 1px solid #30363d;
@@ -246,6 +351,7 @@ tr:hover td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: help;
 }
 
 .td-date {
@@ -255,9 +361,17 @@ tr:hover td {
 }
 
 .error-state {
-  text-align: center;
-  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  background: rgba(248, 81, 73, 0.1);
+  border: 1px solid #f85149;
+  border-radius: 8px;
   color: #f85149;
+  font-size: 13px;
+  margin-bottom: 16px;
 }
 
 .empty-state {
@@ -266,9 +380,32 @@ tr:hover td {
   color: #8b949e;
 }
 
+.empty-state .empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
 .empty-state small {
   display: block;
   margin-top: 8px;
   color: #484f58;
+}
+
+.btn-reset-filter {
+  margin-top: 12px;
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #8b949e;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-reset-filter:hover {
+  border-color: #58a6ff;
+  color: #e6edf3;
 }
 </style>

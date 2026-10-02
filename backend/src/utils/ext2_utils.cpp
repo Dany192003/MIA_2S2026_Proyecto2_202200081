@@ -4,6 +4,72 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
+#include <cstdlib>
+#include <filesystem>
+#include <unistd.h>      // readlink
+#include <sys/stat.h>
+
+namespace fs = std::filesystem;
+
+// ============================================================
+// RUTAS DE TRABAJO (✅ NUEVO)
+// ============================================================
+
+// Devuelve el directorio donde vive el ejecutable
+// Ej: si el binario está en /home/edwin/proyecto/build/ext2fs
+//     devuelve "/home/edwin/proyecto/build"
+std::string Ext2Utils::getExecutableDir() {
+    char buf[4096];
+    ssize_t len = readlink("/proc/self/exe", buf, sizeof(buf) - 1);
+    if (len != -1) {
+        buf[len] = '\0';
+        std::string fullPath(buf);
+        size_t lastSlash = fullPath.find_last_of('/');
+        if (lastSlash != std::string::npos) {
+            return fullPath.substr(0, lastSlash);
+        }
+    }
+    // Fallback: directorio actual
+    return ".";
+}
+
+// Devuelve la carpeta de discos y la crea si no existe
+std::string Ext2Utils::getDiskDir() {
+    // 1. Variable de entorno (prioridad)
+    const char* env = std::getenv("EXT2_DISK_DIR");
+    if (env && strlen(env) > 0) {
+        std::string dir(env);
+        if (dir.back() != '/') dir += "/";
+        std::error_code ec;
+        fs::create_directories(dir, ec);
+        return dir;
+    }
+    
+    // 2. Fallback: <ejecutable>/discos/
+    std::string dir = getExecutableDir() + "/discos/";
+    std::error_code ec;
+    fs::create_directories(dir, ec);
+    return dir;
+}
+
+// Devuelve la carpeta de reportes y la crea si no existe
+std::string Ext2Utils::getReportsDir() {
+    // 1. Variable de entorno (prioridad)
+    const char* env = std::getenv("EXT2_REPORTS_DIR");
+    if (env && strlen(env) > 0) {
+        std::string dir(env);
+        if (dir.back() != '/') dir += "/";
+        std::error_code ec;
+        fs::create_directories(dir, ec);
+        return dir;
+    }
+    
+    // 2. Fallback: <ejecutable>/reports/
+    std::string dir = getExecutableDir() + "/reports/";
+    std::error_code ec;
+    fs::create_directories(dir, ec);
+    return dir;
+}
 
 // ============================================================
 // SUPERBLOCK
@@ -225,7 +291,7 @@ std::vector<std::string> Ext2Utils::splitPath(const std::string& path) {
 }
 
 // ============================================================
-// ✅ FIX 1: findInodeByPathInternal recorre TODOS los bloques directos
+// findInodeByPathInternal recorre TODOS los bloques directos
 // ============================================================
 int Ext2Utils::findInodeByPathInternal(std::fstream& disk, const std::string& path,
                                        const Superblock& sb) {
@@ -242,7 +308,7 @@ int Ext2Utils::findInodeByPathInternal(std::fstream& disk, const std::string& pa
         
         bool found = false;
         
-        // ✅ FIX: recorrer TODOS los bloques directos (no solo i_block[0])
+        // Recorrer TODOS los bloques directos
         for (int b = 0; b < 12 && !found; b++) {
             if (inode.i_block[b] == -1) break;
             
@@ -367,7 +433,7 @@ std::string Ext2Utils::readFile(const std::string& diskPath, const std::string& 
 }
 
 // ============================================================
-// ✅ FIX 2: writeFile usa el siguiente bloque del padre si el actual está lleno
+// writeFile
 // ============================================================
 
 bool Ext2Utils::writeFile(const std::string& diskPath, const std::string& filePath, 
@@ -662,7 +728,7 @@ bool Ext2Utils::writeFile(const std::string& diskPath, const std::string& filePa
     if (sbUpdated.s_free_blocks_count < 0) sbUpdated.s_free_blocks_count = 0;
     if (sbUpdated.s_free_inodes_count < 0) sbUpdated.s_free_inodes_count = 0;
     
-    // ✅ FIX: buscar slot en TODOS los bloques directos del padre
+    // Buscar slot en TODOS los bloques directos del padre
     bool added = false;
     
     for (int b = 0; b < 12 && !added; b++) {
@@ -727,7 +793,7 @@ bool Ext2Utils::writeFile(const std::string& diskPath, const std::string& filePa
 }
 
 // ============================================================
-// ✅ FIX 3: createDirectory usa el siguiente bloque del padre si el actual está lleno
+// createDirectory
 // ============================================================
 
 bool Ext2Utils::createDirectory(const std::string& diskPath, const std::string& dirPath,
@@ -823,7 +889,7 @@ bool Ext2Utils::createDirectory(const std::string& diskPath, const std::string& 
     writeInode(disk, sb, newInodeIndex, newInode);
     markInodeUsed(disk, sb, newInodeIndex);
     
-    // ✅ FIX: buscar slot en TODOS los bloques directos del padre
+    // Buscar slot en TODOS los bloques directos del padre
     bool added = false;
     
     for (int b = 0; b < 12 && !added; b++) {

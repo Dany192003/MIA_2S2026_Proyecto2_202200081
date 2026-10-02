@@ -14,7 +14,7 @@
             v-model="form.id"
             type="text"
             placeholder="Ej: 811A"
-            :disabled="loading || isLoggedIn"
+            :disabled="loading || store.state.isLoggedIn"
             @keyup.enter="submitLogin"
           />
         </div>
@@ -26,7 +26,7 @@
             v-model="form.user"
             type="text"
             placeholder="Ej: root"
-            :disabled="loading || isLoggedIn"
+            :disabled="loading || store.state.isLoggedIn"
             @keyup.enter="submitLogin"
           />
         </div>
@@ -38,7 +38,7 @@
             v-model="form.pass"
             type="password"
             placeholder="••••••"
-            :disabled="loading || isLoggedIn"
+            :disabled="loading || store.state.isLoggedIn"
             @keyup.enter="submitLogin"
           />
         </div>
@@ -50,7 +50,7 @@
 
         <button
           class="btn-submit"
-          :disabled="loading || isLoggedIn || !canSubmit"
+          :disabled="loading || store.state.isLoggedIn || !canSubmit"
           @click="submitLogin"
         >
           <span v-if="!loading">Iniciar Sesión</span>
@@ -61,8 +61,10 @@
           {{ error }}
         </div>
 
-        <div v-if="isLoggedIn" class="login-success">
-          ✅ Ya hay una sesión activa como <strong>{{ sessionUser }}</strong> en <strong>{{ sessionMountId }}</strong>
+        <div v-if="store.state.isLoggedIn" class="login-success">
+          ✅ Ya hay una sesión activa como <strong>{{ store.state.currentUser }}</strong> en <strong>{{ store.state.mountId }}</strong>
+          <br><br>
+          <button class="btn-go-home" @click="$router.push('/')">Ir al Home</button>
         </div>
       </div>
     </div>
@@ -70,10 +72,15 @@
 </template>
 
 <script>
+import { inject } from 'vue'
 import { loginUser, getSessionStatus } from '../services/api.js'
 
 export default {
   name: 'LoginView',
+  setup() {
+    const store = inject('store')
+    return { store }
+  },
   data() {
     return {
       form: {
@@ -83,10 +90,7 @@ export default {
       },
       rememberUser: false,
       loading: false,
-      error: null,
-      isLoggedIn: false,
-      sessionUser: '',
-      sessionMountId: ''
+      error: null
     }
   },
   computed: {
@@ -116,9 +120,7 @@ export default {
     async checkCurrentSession() {
       const result = await getSessionStatus()
       if (result.success && result.data?.active) {
-        this.isLoggedIn = true
-        this.sessionUser = result.data.user
-        this.sessionMountId = result.data.mountId
+        this.store.actions.setSession(result.data)
       }
     },
 
@@ -132,6 +134,17 @@ export default {
         const result = await loginUser(this.form.id, this.form.user, this.form.pass)
 
         if (result.success) {
+          // ✅ Actualizar store con la nueva sesión
+          this.store.actions.setSession({
+            active: true,
+            user: this.form.user,
+            mountId: this.form.id,
+            diskPath: result.data?.diskPath || '',
+            uid: result.data?.session?.uid || 1,
+            gid: result.data?.session?.gid || 1,
+            group: result.data?.session?.group || 'root'
+          })
+
           // Guardar usuario si se marcó "recordar"
           if (this.rememberUser) {
             localStorage.setItem('ext2_remembered_user', JSON.stringify({
@@ -142,7 +155,7 @@ export default {
             localStorage.removeItem('ext2_remembered_user')
           }
 
-          // Redirigir al home
+          // ✅ Redirigir al home
           this.$router.push('/')
         } else {
           this.error = result.data?.message || result.error || 'Error al iniciar sesión'
@@ -158,6 +171,7 @@ export default {
 </script>
 
 <style scoped>
+/* Los mismos estilos + .btn-go-home */
 .login-view {
   display: flex;
   align-items: center;
@@ -270,6 +284,17 @@ export default {
 .btn-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-go-home {
+  padding: 8px 20px;
+  background: #58a6ff;
+  color: #0d1117;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 13px;
 }
 
 .login-error {

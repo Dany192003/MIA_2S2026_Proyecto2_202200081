@@ -1,4 +1,4 @@
-import { reactive, readonly } from 'vue'
+import { reactive } from 'vue'
 
 const state = reactive({
   // Estado de sesión
@@ -8,6 +8,7 @@ const state = reactive({
   diskPath: '',
   uid: -1,
   gid: -1,
+  group: '',
   
   // Particiones montadas
   mountedPartitions: [],
@@ -22,12 +23,13 @@ const state = reactive({
 // Acciones para modificar el estado
 const actions = {
   setSession(sessionData) {
-    state.isLoggedIn = sessionData.active || false
+    state.isLoggedIn = sessionData.active === true
     state.currentUser = sessionData.user || ''
     state.mountId = sessionData.mountId || ''
     state.diskPath = sessionData.diskPath || ''
-    state.uid = sessionData.uid || -1
-    state.gid = sessionData.gid || -1
+    state.uid = sessionData.uid ?? -1
+    state.gid = sessionData.gid ?? -1
+    state.group = sessionData.group || ''
   },
   
   clearSession() {
@@ -37,11 +39,11 @@ const actions = {
     state.diskPath = ''
     state.uid = -1
     state.gid = -1
+    state.group = ''
   },
   
   setMountedPartitions(partitions) {
     state.mountedPartitions = partitions || []
-    // Si no hay selección y hay particiones, seleccionar la primera
     if (!state.selectedMountId && state.mountedPartitions.length > 0) {
       state.selectedMountId = state.mountedPartitions[0].id
     }
@@ -56,14 +58,13 @@ const actions = {
   }
 }
 
-// Getters para acceder al estado
+// Getters
 const getters = {
   getSelectedMount() {
     return state.mountedPartitions.find(p => p.id === state.selectedMountId) || null
   },
   
   getActiveMountId() {
-    // Prioridad: selección manual > primera montada
     if (state.selectedMountId) return state.selectedMountId
     if (state.mountedPartitions.length > 0) return state.mountedPartitions[0].id
     return state.mountId || ''
@@ -71,7 +72,7 @@ const getters = {
 }
 
 export const store = {
-  state: readonly(state),
+  state,      // ← reactivo directo (NO readonly)
   actions,
   getters
 }

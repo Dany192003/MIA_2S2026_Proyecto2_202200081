@@ -6,10 +6,19 @@
       <p v-else-if="step === 'partition'">Seleccione la partición que desea visualizar</p>
     </div>
 
+    <!-- ✅ NUEVO: Banner modo solo lectura -->
+    <div class="readonly-banner">
+      <span class="banner-icon">📖</span>
+      <span class="banner-text">
+        <strong>Modo solo lectura.</strong> Puede explorar discos, particiones, carpetas y archivos. Para crear o modificar, use los comandos desde el Home.
+      </span>
+    </div>
+
     <!-- PASO 1: Selección de disco -->
     <div v-if="!step" class="disk-grid">
       <div v-if="loading" class="loading-state">Cargando discos...</div>
       <div v-else-if="disks.length === 0" class="empty-state">
+        <span class="empty-icon">💽</span>
         <p>No hay discos creados</p>
         <small>Use el comando <code>mkdisk</code> para crear uno</small>
       </div>
@@ -54,12 +63,16 @@
         <div class="disk-details">
           <small>{{ disk.path }}</small>
         </div>
+
+        <div class="disk-action">
+          <span class="action-text">Clic para ver particiones →</span>
+        </div>
       </div>
     </div>
 
     <!-- PASO 2: Selección de partición -->
     <div v-else-if="step === 'partition'" class="partition-grid">
-      <button class="btn-back" @click="goBack">← Volver</button>
+      <button class="btn-back" @click="goBack">← Volver a discos</button>
       <div class="selected-disk-info">
         <span>Disco seleccionado:</span>
         <strong>{{ selectedDisk.name }}</strong>
@@ -67,7 +80,9 @@
       </div>
 
       <div v-if="selectedDisk.partitions.length === 0" class="empty-state">
+        <span class="empty-icon">📂</span>
         <p>Este disco no tiene particiones</p>
+        <small>Use <code>fdisk</code> desde el Home para crear una</small>
       </div>
 
       <div
@@ -112,8 +127,11 @@
           </div>
         </div>
 
-        <div v-if="part.status !== '1'" class="partition-hint">
-          <small>Use MOUNT para habilitar</small>
+        <div v-if="part.status === '1'" class="partition-action success">
+          <span class="action-text">Clic para explorar archivos →</span>
+        </div>
+        <div v-else class="partition-action warning">
+          <span class="action-text">⚠️ No montada — Use MOUNT</span>
         </div>
       </div>
     </div>
@@ -165,7 +183,6 @@ export default {
         alert('La partición no está montada.\nUse el comando MOUNT primero desde el Home.')
         return
       }
-      // Redirigir a la vista de archivos con el ID de la partición
       this.$router.push({
         path: '/files',
         query: { id: part.id }
@@ -193,7 +210,7 @@ export default {
 
 .view-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .view-header h1 {
@@ -209,13 +226,33 @@ export default {
   margin: 0;
 }
 
-/* ============================================================
-   DISK GRID
-   ============================================================ */
+/* ✅ NUEVO: Banner modo lectura */
+.readonly-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(88, 166, 255, 0.08);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: #e6edf3;
+}
 
+.readonly-banner .banner-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.readonly-banner .banner-text strong {
+  color: #58a6ff;
+}
+
+/* DISK GRID */
 .disk-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -304,13 +341,33 @@ export default {
   border-top: 1px solid #21262d;
 }
 
-/* ============================================================
-   PARTITION GRID
-   ============================================================ */
+/* ✅ NUEVO: Acciones */
+.disk-action,
+.partition-action {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #21262d;
+  font-size: 11px;
+}
 
+.disk-action .action-text {
+  color: #58a6ff;
+  font-weight: 600;
+}
+
+.partition-action.success .action-text {
+  color: #3fb950;
+  font-weight: 600;
+}
+
+.partition-action.warning .action-text {
+  color: #d29922;
+}
+
+/* PARTITION GRID */
 .partition-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -417,27 +474,20 @@ export default {
   font-weight: 700;
 }
 
-.partition-hint {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #21262d;
-  color: #484f58;
-}
-
-.partition-hint small {
-  font-size: 10px;
-}
-
-/* ============================================================
-   ESTADOS
-   ============================================================ */
-
+/* ESTADOS */
 .loading-state,
 .empty-state {
   grid-column: 1 / -1;
   text-align: center;
   padding: 40px;
   color: #8b949e;
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.5;
 }
 
 .empty-state code {
@@ -447,6 +497,12 @@ export default {
   border: 1px solid #30363d;
   font-family: monospace;
   color: #e6edf3;
+}
+
+.empty-state small {
+  display: block;
+  margin-top: 8px;
+  color: #484f58;
 }
 
 @media (max-width: 480px) {

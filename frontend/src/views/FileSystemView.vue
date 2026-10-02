@@ -5,16 +5,41 @@
       <p>ID Partición: <strong>{{ mountId }}</strong></p>
     </div>
 
-    <div class="path-bar">
-      <button class="btn-up" :disabled="currentPath === '/'" @click="goUp">↑</button>
-      <span class="path-display">{{ currentPath }}</span>
-      <button class="btn-refresh" @click="refresh">↻</button>
+    <!-- ✅ NUEVO: Banner modo solo lectura -->
+    <div class="readonly-banner">
+      <span class="banner-icon">📖</span>
+      <span class="banner-text">
+        <strong>Modo solo lectura.</strong> Para crear, eliminar o modificar archivos, use los comandos desde el Home.
+      </span>
+    </div>
+
+    <!-- ✅ NUEVO: Breadcrumb clicable -->
+    <div class="breadcrumb-bar">
+      <button class="btn-up" :disabled="currentPath === '/'" @click="goUp" title="Subir">
+        ⬆
+      </button>
+      <div class="breadcrumb">
+        <template v-for="(crumb, index) in breadcrumbs" :key="index">
+          <span
+            class="crumb"
+            :class="{ 'active': index === breadcrumbs.length - 1 }"
+            @click="navigateTo(index)"
+          >
+            {{ crumb.label }}
+          </span>
+          <span v-if="index < breadcrumbs.length - 1" class="crumb-separator">/</span>
+        </template>
+      </div>
+      <button class="btn-refresh" @click="refresh" title="Refrescar">↻</button>
     </div>
 
     <div class="content-area">
       <div v-if="loading" class="loading-state">Cargando...</div>
       <div v-else-if="error" class="error-state">{{ error }}</div>
-      <div v-else-if="items.length === 0" class="empty-state">Carpeta vacía</div>
+      <div v-else-if="items.length === 0" class="empty-state">
+        <span class="empty-icon">📭</span>
+        <p>Carpeta vacía</p>
+      </div>
       <div v-else class="item-grid">
         <div
           v-for="item in items"
@@ -44,6 +69,10 @@
           <pre v-if="fileContent" class="file-content">{{ fileContent }}</pre>
           <div v-else class="loading-content">Cargando contenido...</div>
         </div>
+        <div class="modal-footer">
+          <span class="modal-footer-info">Solo lectura</span>
+          <button class="btn-close" @click="closeFileModal">Cerrar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -64,6 +93,18 @@ export default {
       showFileModal: false,
       selectedFileName: '',
       fileContent: ''
+    }
+  },
+  computed: {
+    breadcrumbs() {
+      const parts = this.currentPath.split('/').filter(p => p)
+      const crumbs = [{ label: '/', path: '/' }]
+      let accumulated = ''
+      for (const part of parts) {
+        accumulated += '/' + part
+        crumbs.push({ label: part, path: accumulated })
+      }
+      return crumbs
     }
   },
   mounted() {
@@ -102,6 +143,15 @@ export default {
       this.currentPath = '/' + parts.join('/')
       if (this.currentPath === '') this.currentPath = '/'
       this.refresh()
+    },
+
+    // ✅ NUEVO: Navegar a un breadcrumb
+    navigateTo(index) {
+      const crumb = this.breadcrumbs[index]
+      if (crumb.path !== this.currentPath) {
+        this.currentPath = crumb.path
+        this.refresh()
+      }
     },
 
     openItem(item) {
@@ -160,7 +210,7 @@ export default {
 
 .view-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .view-header h1 {
@@ -176,12 +226,41 @@ export default {
   margin: 0;
 }
 
-.path-bar {
+.view-header strong {
+  color: #58a6ff;
+  font-family: monospace;
+}
+
+/* ✅ NUEVO: Banner modo lectura */
+.readonly-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(88, 166, 255, 0.08);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #e6edf3;
+}
+
+.readonly-banner .banner-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.readonly-banner .banner-text strong {
+  color: #58a6ff;
+}
+
+/* ✅ NUEVO: Breadcrumb clicable */
+.breadcrumb-bar {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
-  padding: 8px;
+  padding: 8px 12px;
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 8px;
@@ -189,7 +268,7 @@ export default {
 
 .btn-up,
 .btn-refresh {
-  padding: 6px 12px;
+  padding: 6px 10px;
   background: #0d1117;
   border: 1px solid #30363d;
   border-radius: 6px;
@@ -197,6 +276,7 @@ export default {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .btn-up:hover:not(:disabled),
@@ -210,14 +290,43 @@ export default {
   cursor: not-allowed;
 }
 
-.path-display {
+.breadcrumb {
   flex: 1;
-  padding: 6px 12px;
-  background: #0d1117;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
   font-family: 'Courier New', monospace;
   font-size: 13px;
-  color: #8b949e;
+  overflow-x: auto;
+}
+
+.crumb {
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #58a6ff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.crumb:hover {
+  background: rgba(88, 166, 255, 0.1);
+}
+
+.crumb.active {
+  color: #e6edf3;
+  font-weight: 600;
+  cursor: default;
+}
+
+.crumb.active:hover {
+  background: transparent;
+}
+
+.crumb-separator {
+  color: #484f58;
+  user-select: none;
 }
 
 .content-area {
@@ -283,6 +392,13 @@ export default {
   padding: 60px 20px;
   color: #8b949e;
   font-size: 14px;
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.5;
 }
 
 .error-state {
@@ -366,5 +482,43 @@ export default {
   color: #8b949e;
   text-align: center;
   padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-top: 1px solid #30363d;
+}
+
+.modal-footer-info {
+  font-size: 11px;
+  color: #484f58;
+}
+
+.btn-close {
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #8b949e;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+  border-color: #58a6ff;
+  color: #e6edf3;
+}
+
+@media (max-width: 480px) {
+  .file-system-view {
+    padding: 12px;
+  }
+  .item-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
 }
 </style>

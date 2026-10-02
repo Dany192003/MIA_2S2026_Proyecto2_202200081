@@ -1,5 +1,24 @@
 <template>
   <div class="home-view">
+    <!-- ✅ NUEVO: Banner de sesión -->
+    <div v-if="!store.state.isLoggedIn" class="session-banner">
+      <div class="banner-content">
+        <span class="banner-icon">⚠️</span>
+        <span class="banner-text">
+          <strong>No hay sesión activa.</strong> Los comandos de archivos (mkdir, mkfile, cat, etc.) requieren autenticación.
+        </span>
+        <router-link to="/login" class="banner-btn">Iniciar Sesión</router-link>
+      </div>
+    </div>
+    <div v-else class="session-banner active">
+      <div class="banner-content">
+        <span class="banner-icon">✅</span>
+        <span class="banner-text">
+          Sesión activa como <strong>{{ store.state.currentUser }}</strong> en <strong>{{ store.state.mountId }}</strong>
+        </span>
+      </div>
+    </div>
+
     <div class="terminal-section">
       <CommandTerminal
         @command-executed="handleCommandExecuted"
@@ -35,6 +54,7 @@
 </template>
 
 <script>
+import { inject } from 'vue'
 import SystemSummary from '../components/Dashboard/SystemSummary.vue'
 import DiskList from '../components/Dashboard/DiskList.vue'
 import FileExplorer from '../components/Dashboard/FileExplorer.vue'
@@ -50,6 +70,10 @@ export default {
     FileExplorer,
     ReportsPanel,
     CommandTerminal
+  },
+  setup() {
+    const store = inject('store')
+    return { store }
   },
   data() {
     return {
@@ -114,6 +138,59 @@ export default {
   flex-direction: column;
   gap: 10px;
   height: 100%;
+}
+
+/* ✅ NUEVO: Banner de sesión */
+.session-banner {
+  background: rgba(210, 153, 34, 0.1);
+  border: 1px solid #d29922;
+  border-radius: 8px;
+  padding: 10px 16px;
+  flex-shrink: 0;
+}
+
+.session-banner.active {
+  background: rgba(63, 185, 80, 0.1);
+  border-color: #3fb950;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.banner-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.banner-text {
+  flex: 1;
+  font-size: 13px;
+  color: #e6edf3;
+}
+
+.banner-text strong {
+  color: #58a6ff;
+}
+
+.banner-btn {
+  padding: 6px 16px;
+  background: #58a6ff;
+  color: #0d1117;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.banner-btn:hover {
+  background: #79c0ff;
+  text-decoration: none;
 }
 
 .terminal-section {

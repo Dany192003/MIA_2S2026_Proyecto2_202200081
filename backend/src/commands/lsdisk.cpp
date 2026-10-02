@@ -1,4 +1,5 @@
 #include "command_handler.h"
+#include "../utils/ext2_utils.h"   // ✅ NUEVO: para usar Ext2Utils::getDiskDir()
 #include <filesystem>
 #include <fstream>
 #include <cstring>
@@ -7,17 +8,7 @@
 
 namespace fs = std::filesystem;
 
-// Ruta configurable con fallback absoluto
-static std::string getDiskDir() {
-    const char* env = std::getenv("EXT2_DISK_DIR");
-    if (env && strlen(env) > 0) {
-        return std::string(env);
-    }
-    
-    return "/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/discos/";
-}
-
-// ✅ NUEVO: Formatear fecha como string legible
+// ✅ Formatear fecha como string legible
 static std::string formatDate(time_t t) {
     struct tm* tm_info = localtime(&t);
     char buffer[32];
@@ -25,7 +16,7 @@ static std::string formatDate(time_t t) {
     return std::string(buffer);
 }
 
-// ✅ NUEVO: Convertir char de fit a string legible
+// ✅ Convertir char de fit a string legible
 static std::string fitToString(char fit) {
     switch (fit) {
         case 'B': return "Best Fit (BF)";
@@ -35,7 +26,7 @@ static std::string fitToString(char fit) {
     }
 }
 
-// ✅ CORREGIDO: Recibe el nombre de la extendida para saltar su EBR
+// ✅ Recibe el nombre de la extendida para saltar su EBR
 static void readLogicalPartitions(std::ifstream& diskFile, 
                                    int64_t extendedStart, 
                                    const std::string& extendedName,
@@ -87,7 +78,7 @@ static void readLogicalPartitions(std::ifstream& diskFile,
         part["size"] = ebr.part_s;
         part["start"] = ebr.part_start;
         part["status"] = std::string(1, ebr.part_mount);
-        part["fit"] = fitToString(ebr.part_fit);  // ✅ NUEVO
+        part["fit"] = fitToString(ebr.part_fit);
         part["id"] = "";
         partitions.push_back(part);
         partCount++;
@@ -105,7 +96,8 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
     result.success = false;
     
     try {
-        std::string diskDir = getDiskDir();
+        // ✅ CAMBIO: Usar el helper centralizado
+        std::string diskDir = Ext2Utils::getDiskDir();
         
         json diskList = json::array();
         
@@ -129,7 +121,6 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                     MBR mbr;
                     diskFile.read(reinterpret_cast<char*>(&mbr), sizeof(MBR));
                     
-                    // ✅ NUEVO: Agregar fit y fecha del disco
                     diskInfo["fit"] = fitToString(mbr.dsk_fit);
                     diskInfo["date"] = formatDate(mbr.mbr_fecha_creacion);
                     diskInfo["signature"] = mbr.mbr_dsk_signature;
@@ -154,13 +145,13 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                             part["size"] = mbr.mbr_partitions[i].part_s;
                             part["start"] = mbr.mbr_partitions[i].part_start;
                             part["status"] = std::string(1, mbr.mbr_partitions[i].part_status);
-                            part["fit"] = fitToString(mbr.mbr_partitions[i].part_fit);  // ✅ NUEVO
+                            part["fit"] = fitToString(mbr.mbr_partitions[i].part_fit);
                             part["id"] = partId;
                             partitions.push_back(part);
                             partCount++;
                             
                             if (mbr.mbr_partitions[i].part_status == '1') {
-                                mountedCount++;  // ✅ NUEVO
+                                mountedCount++;
                             }
                             
                             if (mbr.mbr_partitions[i].part_type == 'E') {
@@ -177,7 +168,7 @@ CommandResult CommandHandler::processLsdisk(const json& params) {
                     
                     diskInfo["partitions"] = partitions;
                     diskInfo["partition_count"] = partCount;
-                    diskInfo["mounted_count"] = mountedCount;  // ✅ NUEVO
+                    diskInfo["mounted_count"] = mountedCount;
                 } else {
                     diskInfo["partitions"] = json::array();
                     diskInfo["partition_count"] = 0;

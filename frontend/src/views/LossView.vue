@@ -11,27 +11,111 @@
       <p>Solo funciona en particiones formateadas como <strong>EXT3</strong>.</p>
     </div>
 
-    <div class="controls">
-      <input
-        v-model="mountId"
-        type="text"
-        placeholder="ID Partición (ej: 811A)"
-        class="input-id"
-      />
-      <button class="btn-loss" :disabled="loading || !mountId || executed" @click="executeLoss">
-        {{ loading ? 'Ejecutando...' : 'Ejecutar LOSS' }}
-      </button>
+    <!-- PASO 1: ID -->
+    <div class="step-box">
+      <div class="step-header">
+        <span class="step-num">1</span>
+        <span class="step-title">Especificar partición</span>
+      </div>
+      <div class="step-content">
+        <input
+          v-model="mountId"
+          type="text"
+          placeholder="ID Partición (ej: 811A)"
+          class="input-id"
+          :disabled="executed"
+        />
+      </div>
     </div>
 
-    <div v-if="message" class="result-box" :class="success ? 'success' : 'error'">
-      {{ message }}
+    <!-- PASO 2: Reportes ANTES -->
+    <div class="step-box" :class="{ 'disabled': !mountId || executed }">
+      <div class="step-header">
+        <span class="step-num">2</span>
+        <span class="step-title">Generar reportes ANTES del LOSS</span>
+      </div>
+      <div class="step-content">
+        <p class="step-hint">Genera los reportes de bitmaps para comparar después.</p>
+        <button
+          class="btn-report"
+          :disabled="!mountId || loadingReports || executed"
+          @click="generateReportsBefore"
+        >
+          {{ loadingReports ? 'Generando...' : '📊 Generar reportes ANTES' }}
+        </button>
+
+        <div v-if="reportsBefore.length > 0" class="reports-list">
+          <div v-for="report in reportsBefore" :key="report.path" class="report-item">
+            <span class="report-icon">✅</span>
+            <div class="report-info">
+              <span class="report-name">{{ report.name }}</span>
+              <span class="report-path">{{ report.path }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div v-if="executed && success" class="reports-section">
-      <h3>📊 Reportes</h3>
-      <p>Genere los reportes de bitmap antes y después del LOSS desde la terminal con:</p>
-      <pre>rep -id={{ mountId }} -path=/ruta/antes.jpg -name=bm_inode
-rep -id={{ mountId }} -path=/ruta/despues.jpg -name=bm_inode</pre>
+    <!-- PASO 3: Ejecutar LOSS -->
+    <div class="step-box danger" :class="{ 'disabled': !mountId || executed }">
+      <div class="step-header">
+        <span class="step-num">3</span>
+        <span class="step-title">Ejecutar LOSS</span>
+      </div>
+      <div class="step-content">
+        <p class="step-hint">Esta acción es irreversible.</p>
+        <button
+          class="btn-loss"
+          :disabled="!mountId || loading || executed"
+          @click="executeLoss"
+        >
+          {{ loading ? 'Ejecutando...' : '💥 Ejecutar LOSS' }}
+        </button>
+
+        <div v-if="message" class="result-box" :class="success ? 'success' : 'error'">
+          {{ message }}
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 4: Reportes DESPUÉS -->
+    <div class="step-box" :class="{ 'disabled': !executed }">
+      <div class="step-header">
+        <span class="step-num">4</span>
+        <span class="step-title">Generar reportes DESPUÉS del LOSS</span>
+      </div>
+      <div class="step-content">
+        <p class="step-hint">Compara con los reportes generados antes.</p>
+        <button
+          class="btn-report"
+          :disabled="!executed || loadingReports"
+          @click="generateReportsAfter"
+        >
+          {{ loadingReports ? 'Generando...' : '📊 Generar reportes DESPUÉS' }}
+        </button>
+
+        <div v-if="reportsAfter.length > 0" class="reports-list">
+          <div v-for="report in reportsAfter" :key="report.path" class="report-item">
+            <span class="report-icon">✅</span>
+            <div class="report-info">
+              <span class="report-name">{{ report.name }}</span>
+              <span class="report-path">{{ report.path }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 5: Comparación -->
+    <div v-if="reportsBefore.length > 0 && reportsAfter.length > 0" class="step-box success">
+      <div class="step-header">
+        <span class="step-num">✓</span>
+        <span class="step-title">Comparación completa</span>
+      </div>
+      <div class="step-content">
+        <p class="step-hint">Abre los reportes para ver la diferencia. Los bitmaps deberían estar vacíos después del LOSS.</p>
+        <button class="btn-reset" @click="reset">🔄 Realizar otra prueba</button>
+      </div>
     </div>
   </div>
 </template>
@@ -45,12 +129,67 @@ export default {
     return {
       mountId: '',
       loading: false,
+      loadingReports: false,
       message: null,
       success: false,
-      executed: false
+      executed: false,
+      reportsBefore: [],
+      reportsAfter: []
     }
   },
   methods: {
+    async generateReportsBefore() {
+      if (!this.mountId) return
+      this.loadingReports = true
+      this.reportsBefore = []
+
+      const timestamp = Date.now()
+      const reportsDir = '/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/reports'
+
+      const reports = [
+        { name: 'bm_inode', file: `loss_antes_bm_inode_${timestamp}.txt` },
+        { name: 'bm_block', file: `loss_antes_bm_block_${timestamp}.txt` },
+        { name: 'inode', file: `loss_antes_inode_${timestamp}.jpg` },
+        { name: 'block', file: `loss_antes_block_${timestamp}.jpg` }
+      ]
+
+      for (const r of reports) {
+        const path = `${reportsDir}/${r.file}`
+        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${path} -name=${r.name}`)
+        if (result.success) {
+          this.reportsBefore.push({ name: r.name, path })
+        }
+      }
+
+      this.loadingReports = false
+    },
+
+    async generateReportsAfter() {
+      if (!this.mountId) return
+      this.loadingReports = true
+      this.reportsAfter = []
+
+      const timestamp = Date.now()
+      const reportsDir = '/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/reports'
+
+      const reports = [
+        { name: 'bm_inode', file: `loss_despues_bm_inode_${timestamp}.txt` },
+        { name: 'bm_block', file: `loss_despues_bm_block_${timestamp}.txt` },
+        { name: 'inode', file: `loss_despues_inode_${timestamp}.jpg` },
+        { name: 'block', file: `loss_despues_block_${timestamp}.jpg` }
+      ]
+
+      for (const r of reports) {
+        const path = `${reportsDir}/${r.file}`
+        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${path} -name=${r.name}`)
+        if (result.success) {
+          this.reportsAfter.push({ name: r.name, path })
+        }
+      }
+
+      this.loadingReports = false
+    },
+
     async executeLoss() {
       if (!confirm('¿Está seguro? Esta operación corromperá el sistema de archivos.')) {
         return
@@ -74,6 +213,15 @@ export default {
         this.message = 'Error de conexión: ' + err.message
       }
       this.loading = false
+    },
+
+    reset() {
+      this.mountId = ''
+      this.message = null
+      this.success = false
+      this.executed = false
+      this.reportsBefore = []
+      this.reportsAfter = []
     }
   }
 }
@@ -126,21 +274,99 @@ export default {
   color: #e6edf3;
 }
 
-.controls {
+.warning-box p strong {
+  display: inline;
+  color: #d29922;
+}
+
+/* Steps */
+.step-box {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.step-box.disabled {
+  opacity: 0.5;
+}
+
+.step-box.danger {
+  border-color: rgba(248, 81, 73, 0.3);
+}
+
+.step-box.success {
+  border-color: rgba(63, 185, 80, 0.3);
+  background: rgba(63, 185, 80, 0.05);
+}
+
+.step-header {
   display: flex;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #0d1117;
+  border-bottom: 1px solid #30363d;
+}
+
+.step-box.danger .step-header {
+  background: rgba(248, 81, 73, 0.1);
+}
+
+.step-box.success .step-header {
+  background: rgba(63, 185, 80, 0.1);
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #58a6ff;
+  color: #0d1117;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.step-box.danger .step-num {
+  background: #f85149;
+  color: #ffffff;
+}
+
+.step-box.success .step-num {
+  background: #3fb950;
+  color: #ffffff;
+}
+
+.step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+.step-content {
+  padding: 16px;
+}
+
+.step-hint {
+  font-size: 12px;
+  color: #8b949e;
+  margin: 0 0 12px 0;
 }
 
 .input-id {
-  padding: 12px 16px;
+  width: 100%;
+  padding: 10px 14px;
   background: #0d1117;
   border: 1px solid #30363d;
   border-radius: 6px;
   color: #e6edf3;
   font-size: 14px;
-  width: 250px;
 }
 
 .input-id:focus {
@@ -148,31 +374,107 @@ export default {
   border-color: #58a6ff;
 }
 
-.btn-loss {
-  padding: 12px 24px;
-  background: #f85149;
-  color: #ffffff;
+.input-id:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-report,
+.btn-loss,
+.btn-reset {
+  padding: 10px 20px;
   border: none;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 13px;
+}
+
+.btn-report {
+  background: #58a6ff;
+  color: #0d1117;
+}
+
+.btn-report:hover:not(:disabled) {
+  background: #79c0ff;
+}
+
+.btn-loss {
+  background: #f85149;
+  color: #ffffff;
 }
 
 .btn-loss:hover:not(:disabled) {
   background: #ff6b64;
 }
 
-.btn-loss:disabled {
+.btn-reset {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #8b949e;
+}
+
+.btn-reset:hover {
+  border-color: #58a6ff;
+  color: #e6edf3;
+}
+
+.btn-report:disabled,
+.btn-loss:disabled,
+.btn-reset:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.result-box {
-  padding: 16px 20px;
-  border-radius: 8px;
+.reports-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.report-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+}
+
+.report-icon {
   font-size: 14px;
-  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.report-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.report-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+.report-path {
+  font-size: 10px;
+  color: #484f58;
+  font-family: 'Courier New', monospace;
+  word-break: break-all;
+}
+
+.result-box {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-top: 12px;
 }
 
 .result-box.success {
@@ -185,35 +487,5 @@ export default {
   background: rgba(248, 81, 73, 0.1);
   border: 1px solid #f85149;
   color: #f85149;
-}
-
-.reports-section {
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-.reports-section h3 {
-  margin: 0 0 12px 0;
-  color: #e6edf3;
-  font-size: 16px;
-}
-
-.reports-section p {
-  color: #8b949e;
-  font-size: 13px;
-  margin-bottom: 12px;
-}
-
-.reports-section pre {
-  background: #0d1117;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #30363d;
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-  color: #a6e3a1;
-  overflow-x: auto;
 }
 </style>

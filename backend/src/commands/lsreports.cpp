@@ -1,4 +1,5 @@
 #include "command_handler.h"
+#include "../utils/ext2_utils.h"   // ✅ NUEVO: para usar Ext2Utils::getReportsDir()
 #include <filesystem>
 #include <fstream>
 #include <cstring>
@@ -6,21 +7,14 @@
 
 namespace fs = std::filesystem;
 
-// Ruta configurable con fallback absoluto
-static std::string getReportsDir() {
-    const char* env = std::getenv("EXT2_REPORTS_DIR");
-    if (env && strlen(env) > 0) {
-        return std::string(env);
-    }
-    return "/home/Edwin/Desktop/MIA_2S2026_Proyecto1_202200081/reports/";
-}
-
 CommandResult CommandHandler::processLsreports(const json& params) {
+    (void)params;
     CommandResult result;
     result.success = false;
     
     try {
-        std::string reportsDir = getReportsDir();
+        // ✅ CAMBIO: Usar el helper centralizado
+        std::string reportsDir = Ext2Utils::getReportsDir();
         
         json reportList = json::array();
         

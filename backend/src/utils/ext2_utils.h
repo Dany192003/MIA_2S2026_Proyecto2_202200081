@@ -23,6 +23,22 @@
 
 class Ext2Utils {
 public:
+    // ===== RUTAS DE TRABAJO (✅ NUEVO) =====
+    // Devuelve la carpeta donde están los discos .mia
+    // 1. Si existe $EXT2_DISK_DIR, la usa
+    // 2. Si no, usa <directorio_del_ejecutable>/discos/
+    // 3. Crea la carpeta si no existe
+    static std::string getDiskDir();
+    
+    // Devuelve la carpeta donde se guardan los reportes
+    // 1. Si existe $EXT2_REPORTS_DIR, la usa
+    // 2. Si no, usa <directorio_del_ejecutable>/reports/
+    // 3. Crea la carpeta si no existe
+    static std::string getReportsDir();
+    
+    // Devuelve la ruta absoluta del directorio donde está el ejecutable
+    static std::string getExecutableDir();
+    
     // ===== SUPERBLOCK =====
     static Superblock readSuperblock(const std::string& diskPath, const MBR& mbr, int partitionIndex);
     static bool writeSuperblock(const std::string& diskPath, const Superblock& sb, const MBR& mbr, int partitionIndex);

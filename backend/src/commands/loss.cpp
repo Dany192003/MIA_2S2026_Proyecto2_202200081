@@ -3,9 +3,6 @@
 #include <fstream>
 #include <cstring>
 #include <ctime>
-#include <filesystem>
-
-namespace fs = std::filesystem;
 
 // ============================================================
 // LOSS - Simular pérdida del sistema de archivos EXT3
@@ -97,13 +94,9 @@ CommandResult CommandHandler::processLoss(const json& params) {
         }
         
         // ============================================================
-        // 10. Guardar datos para los reportes ANTES
+        // 10. Timestamp para el reporte de resultado
         // ============================================================
         std::string timestamp = std::to_string(time(nullptr));
-        std::string reportsDir = "/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/reports/";
-        
-        // Generar reportes ANTES usando el sistema de reportes existente
-        // (esto se hace desde el frontend con el comando rep, pero aquí guardamos estado)
         
         // ============================================================
         // 11. Limpiar los 4 bloques críticos con \0
