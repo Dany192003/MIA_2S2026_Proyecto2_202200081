@@ -1,13 +1,24 @@
 #include "command_handler.h"
+#include "../utils/ext2_utils.h"
 #include <unistd.h>
+
+// ✅ NUEVO: Resuelve una ruta. Si es relativa, la combina con EXT2_DISK_DIR
+static std::string resolveDiskPath(const std::string& inputPath) {
+    if (inputPath.empty()) return inputPath;
+    if (inputPath[0] == '/') return inputPath;
+    
+    std::string baseDir = Ext2Utils::getDiskDir();
+    return baseDir + inputPath;
+}
 
 CommandResult CommandHandler::processRmdisk(const json& params) {
     CommandResult result;
     result.success = false;
     
     try {
-        // 1. Obtener parámetros
-        std::string path = params["path"];
+        // 1. Obtener parámetros y resolver ruta
+        std::string rawPath = params["path"];
+        std::string path = resolveDiskPath(rawPath);
         
         // 2. Validar que la ruta no esté vacía
         if (path.empty()) {

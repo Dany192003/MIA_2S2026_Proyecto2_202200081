@@ -4,6 +4,18 @@
 #include <cstring>
 #include <cstdlib>
 
+// ✅ NUEVO: Resuelve ruta de reporte. Si es relativa, la combina con EXT2_REPORTS_DIR
+static std::string resolveReportPath(const std::string& inputPath) {
+    if (inputPath.empty()) return inputPath;
+    
+    // Si ya es absoluta, usar tal cual
+    if (inputPath[0] == '/') return inputPath;
+    
+    // Ruta relativa → resolver contra EXT2_REPORTS_DIR
+    std::string baseDir = Ext2Utils::getReportsDir();
+    return baseDir + inputPath;
+}
+
 CommandResult CommandHandler::processRep(const json& params) {
     CommandResult result;
     result.success = false;
@@ -16,7 +28,10 @@ CommandResult CommandHandler::processRep(const json& params) {
         }
         
         std::string name = params["name"];
-        std::string path = params["path"];
+        std::string rawPath = params["path"];
+        // ✅ NUEVO: Resolver ruta relativa contra EXT2_REPORTS_DIR
+        std::string path = resolveReportPath(rawPath);
+        
         std::string id = params["id"];
         std::string path_file = params.contains("path_file_ls") ? std::string(params["path_file_ls"]) : "";
         

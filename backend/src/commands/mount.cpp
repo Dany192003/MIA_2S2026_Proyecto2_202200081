@@ -1,7 +1,17 @@
 #include "command_handler.h"
+#include "../utils/ext2_utils.h"
 #include <fstream>
 #include <cstring>
 #include <set>
+
+// ✅ NUEVO: Resuelve una ruta relativa contra EXT2_DISK_DIR
+static std::string resolveDiskPath(const std::string& inputPath) {
+    if (inputPath.empty()) return inputPath;
+    if (inputPath[0] == '/') return inputPath;
+    
+    std::string baseDir = Ext2Utils::getDiskDir();
+    return baseDir + inputPath;
+}
 
 static std::string generateMountId(const std::string& carnet,
                                     const std::string& diskPath,
@@ -64,7 +74,9 @@ CommandResult CommandHandler::processMount(const json& params) {
     result.success = false;
     
     try {
-        std::string path = params["path"];
+        std::string rawPath = params["path"];
+        // ✅ NUEVO: Resolver ruta relativa contra EXT2_DISK_DIR
+        std::string path = resolveDiskPath(rawPath);
         std::string name = params["name"];
         
         if (!validateDiskExists(path)) {

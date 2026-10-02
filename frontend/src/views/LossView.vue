@@ -144,8 +144,8 @@ export default {
       this.reportsBefore = []
 
       const timestamp = Date.now()
-      const reportsDir = '/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/reports'
 
+      // ✅ CAMBIO: Rutas relativas (el backend las resuelve contra EXT2_REPORTS_DIR)
       const reports = [
         { name: 'bm_inode', file: `loss_antes_bm_inode_${timestamp}.txt` },
         { name: 'bm_block', file: `loss_antes_bm_block_${timestamp}.txt` },
@@ -154,10 +154,12 @@ export default {
       ]
 
       for (const r of reports) {
-        const path = `${reportsDir}/${r.file}`
-        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${path} -name=${r.name}`)
+        // ✅ CAMBIO: Enviar solo el nombre del archivo, no la ruta absoluta
+        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${r.file} -name=${r.name}`)
         if (result.success) {
-          this.reportsBefore.push({ name: r.name, path })
+          // ✅ Mostrar la ruta resuelta que devuelve el backend
+          const resolvedPath = result.data?.data?.report?.path || r.file
+          this.reportsBefore.push({ name: r.name, path: resolvedPath })
         }
       }
 
@@ -170,8 +172,8 @@ export default {
       this.reportsAfter = []
 
       const timestamp = Date.now()
-      const reportsDir = '/home/Edwin/Desktop/MIA_2S2026_Proyecto2_202200081/reports'
 
+      // ✅ CAMBIO: Rutas relativas
       const reports = [
         { name: 'bm_inode', file: `loss_despues_bm_inode_${timestamp}.txt` },
         { name: 'bm_block', file: `loss_despues_bm_block_${timestamp}.txt` },
@@ -180,10 +182,11 @@ export default {
       ]
 
       for (const r of reports) {
-        const path = `${reportsDir}/${r.file}`
-        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${path} -name=${r.name}`)
+        // ✅ CAMBIO: Enviar solo el nombre del archivo
+        const result = await analyzeCommand(`rep -id=${this.mountId} -path=${r.file} -name=${r.name}`)
         if (result.success) {
-          this.reportsAfter.push({ name: r.name, path })
+          const resolvedPath = result.data?.data?.report?.path || r.file
+          this.reportsAfter.push({ name: r.name, path: resolvedPath })
         }
       }
 

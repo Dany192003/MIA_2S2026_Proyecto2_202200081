@@ -1,4 +1,5 @@
 #include "command_handler.h"
+#include "../utils/ext2_utils.h"
 #include <fstream>
 #include <random>
 #include <cstring>
@@ -42,13 +43,36 @@ static int generateRandomSignature() {
     return dis(gen);
 }
 
+// ✅ NUEVO: Resuelve una ruta. Si es relativa, la combina con EXT2_DISK_DIR
+static std::string resolveDiskPath(const std::string& inputPath) {
+    if (inputPath.empty()) return inputPath;
+    
+    // Si ya es absoluta, usar tal cual (compatibilidad con PDF)
+    if (inputPath[0] == '/') {
+        return inputPath;
+    }
+    
+    // Ruta relativa → resolver contra EXT2_DISK_DIR
+    std::string baseDir = Ext2Utils::getDiskDir();
+    
+    // Evitar doble slash
+    if (!baseDir.empty() && baseDir.back() == '/' && inputPath[0] == '/') {
+        return baseDir + inputPath.substr(1);
+    }
+    
+    return baseDir + inputPath;
+}
+
 CommandResult CommandHandler::processMkdisk(const json& params) {
     CommandResult result;
     result.success = false;
     
     try {
         // 1. Obtener parámetros
-        std::string path = params["path"];
+        std::string rawPath = params["path"];
+        // ✅ NUEVO: Resolver ruta relativa contra EXT2_DISK_DIR
+        std::string path = resolveDiskPath(rawPath);
+        
         int size = std::stoi(std::string(params["size"]));
         std::string unit = params.contains("unit") ? std::string(params["unit"]) : "m";
         std::string fit = params.contains("fit") ? std::string(params["fit"]) : "ff";

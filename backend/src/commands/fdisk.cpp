@@ -1,9 +1,19 @@
 #include "command_handler.h"
+#include "../utils/ext2_utils.h"
 #include <fstream>
 #include <cstring>
 #include <cmath>
 #include <vector>
 #include "../structures/ebr.h"
+
+// ✅ NUEVO: Resuelve una ruta relativa contra EXT2_DISK_DIR
+static std::string resolveDiskPath(const std::string& inputPath) {
+    if (inputPath.empty()) return inputPath;
+    if (inputPath[0] == '/') return inputPath;
+    
+    std::string baseDir = Ext2Utils::getDiskDir();
+    return baseDir + inputPath;
+}
 
 static int64_t getFileSize(const std::string& path) {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
@@ -372,7 +382,9 @@ CommandResult CommandHandler::processFdisk(const json& params) {
     
     try {
         // 1. Parámetros obligatorios
-        std::string path = params["path"];
+        std::string rawPath = params["path"];
+        // ✅ NUEVO: Resolver ruta relativa contra EXT2_DISK_DIR
+        std::string path = resolveDiskPath(rawPath);
         std::string name = params["name"];
         
         // 2. Parámetros opcionales
@@ -461,7 +473,7 @@ CommandResult CommandHandler::processFdisk(const json& params) {
         }
         
         // ============================================================
-        // CASO 3: CREATE (como antes)
+        // CASO 3: CREATE
         // ============================================================
         if (!hasSize) {
             disk.close();
